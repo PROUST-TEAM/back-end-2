@@ -30,7 +30,7 @@ paths:
                 example: "success!"
               data:
                 type: array
-                example: { "perfume_contentsData": [{ "name": "Eau Duelle", "nameKor": "오 듀엘르", "description": "오 듀엘르는 바닐라 깍지가 고아, 카르타고, 베니스, 바빌론 등의 향신료 항로를 따라 가는, 상상 속의 여행을 표현한 향입니다.", "imageUrl": "![향수 이미지](uploads/1.png)" }] }
+                example: { "perfume_contentsData": [{ "name": "Eau Duelle", "nameKor": "오 듀엘르", "description": "오 듀엘르는 바닐라 깍지가 고아, 카르타고, 베니스, 바빌론 등의 향신료 항로를 따라 가는, 상상 속의 여행을 표현한 향입니다.", "imageUrl": "uploads/1.png" }] }
 
         "400":
           description: 잘못된 요청
