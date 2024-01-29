@@ -1,39 +1,40 @@
-const express = require('express');
-const {body,validationResult}=require('express-validator');
-const isAuth =require('../middlewares/jwt');
-const UserController = require('../controllers/auth');
-const User = require('../models/user');
-const router = express.Router();
+import express from "express";
+import { body, validationResult } from "express-validator";
 
-router.post('/login',
-[body('id').trim(),body('password').trim().isLength({min:8})]
-,UserController.Login);
+import { isAuth } from "../middlewares/jwt.js";
+import { Login, logout, Signup, UserDelete } from "../controllers/auth.js";
+import { User } from "../models/user.js";
 
-router.put('/signup',
+export const UserRoutes = express.Router();
+
+UserRoutes.post("/login", [body("id").trim(), body("password").trim().isLength({ min: 8 })], Login);
+
+UserRoutes.put(
+  "/signup",
   [
-    body('id').isEmail().withMessage('Please enter a valid mail')
-    .custom(value => {
-      return User.findById(value).then(userDoc => {
-        if(userDoc) {
-          return Promise.reject('아이디가 존재합니다');
-        }
-      });
-    })
-    .normalizeEmail(),
-    body('password').trim().isLength({min:8}),
-    body('name').trim().not().isEmpty()
+    body("id")
+      .isEmail()
+      .withMessage("Please enter a valid mail")
+      .custom((value) => {
+        return User.findById(value).then((userDoc) => {
+          if (userDoc) {
+            return Promise.reject("아이디가 존재합니다");
+          }
+        });
+      })
+      .normalizeEmail(),
+    body("password").trim().isLength({ min: 8 }),
+    body("name").trim().not().isEmpty(),
   ],
-  (req, res, next) => {  
+  (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log('Validation errors:', errors.array());  
+      console.log("Validation errors:", errors.array());
     }
-    next();  
+    next();
   },
-  UserController.Signup
+  Signup
 );
 
-router.post('/logout',isAuth,UserController.logout);
-router.delete('/delete/:id',isAuth,UserController.UserDelete);
-
-module.exports = router;
+UserRoutes.post("/logout", isAuth, logout);
+UserRoutes.delete("/delete/:id", isAuth, UserDelete);
