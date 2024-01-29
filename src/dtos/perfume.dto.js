@@ -14,3 +14,17 @@ export const previewperfumeContentResponseDTO = (data) => {
   console.log(perfume_contents);
   return { perfume_contentsData: perfume_contents };
 };
+
+// 향수 카테고리 정보 조회
+export const previewcategoryContentResponseDTO = (data) => {
+  const category_contents = [];
+
+  for (let i = 0; i < data.length; i++) {
+    category_contents.push({
+      keyword: data[i].Keyword,
+    });
+  }
+
+  console.log(category_contents);
+  return { category_contentsData: category_contents };
+};
