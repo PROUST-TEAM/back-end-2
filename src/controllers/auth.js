@@ -28,8 +28,8 @@ export const Login = async (req, res, next) => {
       "secretsecretsecret",
       { expiresIn: "1h" }
     );
-    res.status(200).json({ token: token, userId: user.ID.toString() });
-    console.log("로그인 성공");
+    res.status(200).json({ message:'로그인 성공',token: token, userId: user.ID.toString() });
+  
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
