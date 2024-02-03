@@ -28,3 +28,8 @@ export const previewcategoryContentResponseDTO = (data) => {
   console.log(category_contents);
   return { category_contentsData: category_contents };
 };
+
+// 향수 코멘트 작성
+export const addperfumeWriteResponseDTO = (perfumeWrite) => {
+  return { Content: perfumeWrite[0].Content };
+};
