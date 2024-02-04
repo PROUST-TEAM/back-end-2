@@ -11,3 +11,7 @@ export const getcategoryId = "SELECT c.Keyword " + "FROM perfumecategory pc JOIN
 export const insertperfumeWriteSql = "INSERT INTO comment (PerfumeID, UserID, Content) VALUES (?, ?, ?);";
 
 export const getperfumeWriteID = "SELECT * FROM comment WHERE CommentID = ?;";
+
+// 향수 코멘트 삭제
+
+export const insertperfumeDeleteSql = "DELETE FROM comment WHERE PerfumeID = ? and UserID = ? and CommentID = ?";

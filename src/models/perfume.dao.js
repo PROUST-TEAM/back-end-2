@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.config.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getPerfumeId, getcategoryId, getperfumeWriteID, insertperfumeWriteSql } from "./perfume.sql.js";
+import { getPerfumeId, getcategoryId, getperfumeWriteID, insertperfumeWriteSql, insertperfumeDeleteSql } from "./perfume.sql.js";
 
 // 향수 상세 정보 조회
 export const getPreviewperfumeContent = async (PerfumeID) => {
@@ -63,6 +63,23 @@ export const getperfumeWrite = async (perfumeWriteId) => {
     conn.release();
     return perfumeWrite;
   } catch (err) {
+    throw new BaseError(status.PARAMETER_IS_WRONG);
+  }
+};
+
+// 향수 코멘트 데이터 삭제
+export const addperfumeDelete = async (PerfumeID, UserID, CommentID) => {
+  try {
+    const conn = await pool.getConnection();
+
+    console.log("Inserting perfumeDelete:", PerfumeID, UserID, CommentID); // 추가: 데이터가 올바르게 전달되는지 확인하기 위한 로그
+
+    const result = await pool.query(insertperfumeDeleteSql, [PerfumeID, UserID, CommentID]);
+
+    conn.release();
+    return result[0].insertId;
+  } catch (err) {
+    console.error("Error in addperfumeDelete:", err); // 추가: 에러 발생 시 에러 메시지 출력
     throw new BaseError(status.PARAMETER_IS_WRONG);
   }
 };

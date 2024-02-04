@@ -33,3 +33,8 @@ export const previewcategoryContentResponseDTO = (data) => {
 export const addperfumeWriteResponseDTO = (perfumeWrite) => {
   return { Content: perfumeWrite[0].Content };
 };
+
+// 향수 코멘트 삭제
+// export const addperfumeDeleteResponseDTO = (perfumeWrite) => {
+//   return { Content: perfumeWrite[0].Content };
+// };
