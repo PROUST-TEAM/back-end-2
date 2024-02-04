@@ -1,40 +1,17 @@
 import express from "express";
-import { body, validationResult } from "express-validator";
-
 import { isAuth } from "../middlewares/jwt.js";
-import { Login, logout, Signup, UserDelete } from "../controllers/auth.js";
-import { User } from "../models/user.js";
+import { Login, logout, Signup, UserDelete, myPage, InfoEdit,findPW, googleLogin, kakaoLogin, naverLogin } from "../controllers/auth.js";
+import asyncHandler from 'express-async-handler';
 
 export const UserRoutes = express.Router();
 
-UserRoutes.post("/login", [body("id").trim(), body("password").trim().isLength({ min: 8 })], Login);
-
-UserRoutes.put(
-  "/signup",
-  [
-    body("id")
-      .isEmail()
-      .withMessage("Please enter a valid mail")
-      .custom((value) => {
-        return User.findById(value).then((userDoc) => {
-          if (userDoc) {
-            return Promise.reject("아이디가 존재합니다");
-          }
-        });
-      })
-      .normalizeEmail(),
-    body("password").trim().isLength({ min: 8 }),
-    body("name").trim().not().isEmpty(),
-  ],
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      console.log("Validation errors:", errors.array());
-    }
-    next();
-  },
-  Signup
-);
-
-UserRoutes.post("/logout", isAuth, logout);
-UserRoutes.delete("/delete/:id", isAuth, UserDelete);
+UserRoutes.post("/login", asyncHandler(Login));
+UserRoutes.post("/signup",asyncHandler(Signup));
+UserRoutes.post("/logout", isAuth, asyncHandler(logout));
+UserRoutes.delete("/delete", isAuth, asyncHandler(UserDelete));
+UserRoutes.get("/mypage",isAuth, asyncHandler(myPage));
+UserRoutes.post("/edit",isAuth,asyncHandler(InfoEdit));
+UserRoutes.post("/findPW",asyncHandler(findPW));
+UserRoutes.get("/google",asyncHandler(googleLogin));
+UserRoutes.get("/kakao",asyncHandler(kakaoLogin));
+UserRoutes.get("/naver",asyncHandler(naverLogin));
