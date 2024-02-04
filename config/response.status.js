@@ -28,4 +28,38 @@ export const status = {
   LOGIN_PARAM_NOT_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNIN4001", message: "ID 혹은 PW 값이 존재하지 않습니다." },
   LOGIN_ID_NOT_EXIST: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "SIGNIN4002", message: "아이디를 찾을 수 없습니다." },
   LOGIN_PASSWORD_WRONG: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNIN4003", message: "비밀번호가 일치하지 않습니다." },
-};
+  LOGIN_ID_OR_PASSWORD_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "LOGIN4001", message: "ID 혹은 PW 값이 존재하지 않습니다." },
+  LOGIN_ID_NOT_EMAIL: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "LOGIN4002", message: "ID는 이메일 형식이어야 합니다." },
+  LOGIN_PASSWORD_SHORT: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "LOGIN4003", message: "비밀번호는 8자리 이상이어야 합니다." },
+  // 회원 가입 관련 에러
+  SIGNUP_EMAIL_DUPLICATE: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNUP4001", message: "이미 사용 중인 이메일입니다." },
+  SIGNUP_NICKNAME_DUPLICATE: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNUP4002", message: "이미 사용 중인 닉네임입니다." },
+  SIGNUP_INPUT_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNUP4003", message: "입력 값(ID, PW, 이름) 중 하나가 비어있습니다." },
+SIGNUP_ID_NOT_EMAIL: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNUP4004", message: "ID는 이메일 형식이어야 합니다." },
+SIGNUP_PASSWORD_SHORT: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNUP4005", message: "비밀번호는 8자리 이상이어야 합니다." },
+SIGNUP_PASSWORD_NOT_MATCH: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNUP4006", message: "비밀번호와 확인 비밀번호가 일치하지 않습니다." },
+  // 회원 탈퇴 관련 에러
+  WITHDRAWAL_NOT_MEMBER: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "WITHDRAWAL4001", message: "존재하지 않는 사용자입니다." },
+
+  // 로그아웃 관련 에러
+  LOGOUT_NOT_LOGGED_IN: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "LOGOUT4001", message: "로그인 상태가 아닙니다." },
+
+  // 아이디 찾기 관련 에러
+  FIND_ID_NOT_EXIST_EMAIL: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "FINDID4001", message: "등록되지 않은 이메일입니다." },
+
+  // 비밀번호 찾기 관련 에러
+  FIND_PW_NOT_EXIST_ID: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "FINDPW4001", message: "등록되지 않은 아이디입니다." },
+
+  // 마이페이지 조회 관련 에러
+  MYPAGE_NOT_MEMBER: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MYPAGE4001", message: "존재하지 않는 사용자입니다." },
+
+  // 회원 수정 관련 에러
+  MEMBER_UPDATE_NOT_MEMBER: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMUPDATE4001", message: "존재하지 않는 사용자입니다." },
+  MEMBER_UPDATE_DUPLICATE_EMAIL: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMUPDATE4002", message: "이미 사용 중인 이메일입니다." },
+  MEMBER_UPDATE_DUPLICATE_NICKNAME: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMUPDATE4003", message: "이미 사용 중인 닉네임입니다." },
+
+  MEMBER_UPDATE_INPUT_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMUPDATE4004", message: "입력 값(ID, PW, 이름) 중 하나가 비어있습니다." },
+  MEMBER_UPDATE_ID_NOT_EMAIL: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMUPDATE4005", message: "ID는 이메일 형식이어야 합니다." },
+  MEMBER_UPDATE_PASSWORD_SHORT: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMUPDATE4006", message: "비밀번호는 8자리 이상이어야 합니다." },
+  MEMBER_UPDATE_PASSWORD_NOT_MATCH: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMUPDATE4007", message: "비밀번호와 확인 비밀번호가 일치하지 않습니다." },
+  };
