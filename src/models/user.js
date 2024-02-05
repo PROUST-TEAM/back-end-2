@@ -11,7 +11,7 @@ export class User {
       const [rows, fields] = await pool.query(query, [id]);
       return rows[0];
     } catch (error) {
-      console.error("Error finding user by email:", error);
+      console.error("Error finding user by id:", error);
       throw new Error("사용자 조회 중 오류가 발생했습니다.");
     }
   }
@@ -28,11 +28,11 @@ export class User {
     }
   }
 
-  static async addUser(ID, UserName, Password) {
-    const query = "INSERT INTO user (ID, UserName, Password) VALUES (?, ?, ?)";
+  static async addUser(ID, UserName, Password,UserAgree) {
+    const query = "INSERT INTO user (ID, UserName, Password,UserAgree) VALUES (?, ?, ?, ?)";
 
     try {
-      const [result] = await pool.query(query, [ID, UserName, Password]);
+      const [result] = await pool.query(query, [ID, UserName, Password, UserAgree]);
       return result;
     } catch (error) {
       console.error("저장 중에 오류가 발생하였습니다", error);
@@ -97,13 +97,34 @@ static async UpdatePass (id,tempPassword){
   const query = "UPDATE user SET password = ? WHERE ID = ?";
   try {
     const [result] = await pool.query(query, [tempPassword, id]);
-    // 처리 결과에 따른 로직...
+    return result;
 } catch (error) {
     console.error("비밀번호 업데이트 중에 오류가 발생하였습니다", error);
     throw new Error("비밀번호 업데이트 중에 에러가 발생하였습니다");
 }
 }
+static async addSocialUser(SNSAccountType, SNSAccountID, UserName, password){
+  const query = "INSERT INTO user (SNSAccountType, SNSAccountID, UserName, Password) VALUES (?, ?, ?, ?)";
+  try {
+      const [result] = await pool.query(query, [SNSAccountType, SNSAccountID, UserName, password]);
+      return result;
+  } catch (error) {
+      console.error("저장 중에 오류가 발생하였습니다", error);
+      throw new Error("사용자 등록 중에 에러가 발생하였습니다");
+  }
+}
 
+static async findBySocialId(id) {
+    const query = "SELECT * FROM user WHERE SNSAccountID = ?";
+
+    try {
+      const [rows, fields] = await pool.query(query, [id]);
+      return rows[0];
+    } catch (error) {
+      console.error("Error finding user by id:", error);
+      throw new Error("사용자 조회 중 오류가 발생했습니다.");
+    }
+  }
 
   }
 

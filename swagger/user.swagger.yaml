@@ -1,32 +1,36 @@
 paths:
   /user/signup:
-    put:
+    post:
       tags:
         - User
       summary: 회원가입
       parameters:
-      - name: signup
-        in: body
-        required: true
-        schema:
-          properties:
-            id:
-              type: string
-              description: 유저 이메일
-              example: swaggerTest@mail.com
-            name:
-              type: string
-              description: 유저 이름
-              example: swagger
-            password:
-              type: string
-              description: 비밀번호 8자리 이상
-              example: '12345678910'
-            confirmPassword:
-              type: string
-              description: 비밀번호 확인 용도
-              example: '12345678910'
-            
+        - name: signup
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: 유저 이메일
+                example: swaggerTest@mail.com
+              name:
+                type: string
+                description: 유저 이름
+                example: swagger
+              password:
+                type: string
+                description: 비밀번호 8자리 이상
+                example: '12345678910'
+              confirmPassword:
+                type: string
+                description: 비밀번호 확인 용도
+                example: '12345678910'
+              UserAgree:
+                type: string
+                description: 약관 동의
+                example: '1'
       responses:
         '201':
           description: 회원 가입 성공!
@@ -47,13 +51,22 @@ paths:
                 example: "success!"
               data:
                 type: object
-                example: {
-                  "id": "swaggerTest@mail.com",
-                  "username": "swagger",
-                  "password": "12345678910",
-                  "confirmPassword":'12345678910'
-                }
-                
+                properties:
+                  id:
+                    type: string
+                    example: swaggerTest@mail.com
+                  username:
+                    type: string
+                    example: swagger
+                  password:
+                    type: string
+                    example: '12345678910'
+                  confirmPassword:
+                    type: string
+                    example: '12345678910'
+                  UserAgree:
+                    type: string
+                    example: '1'
         '401':
           description: 잘못된 요청
           schema:
@@ -105,172 +118,201 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
+
   /user/login:
     post:
       tags:
         - User
       summary: 로그인
       parameters:
-      - name: login
-        in: body
-        required: true
-        schema:
-          properties:
-            id:
-              type: string
-              description: 유저 이메일
-              example: swaggerTest@mail.com
-            password:
-              type: string
-              description: 비밀번호 8자리 이상
-              example: '12345678910'
-            
+        - name: id
+          in: formData
+          description: 유저 이메일
+          required: true
+          type: string
+          example: swaggerTest@mail.com
+        - name: password
+          in: formData
+          description: 비밀번호
+          required: true
+          type: string
+          example: '12345678910'
       responses:
         '200':
-          description: 로그인 성공!
+          description: 로그인 성공
           schema:
             type: object
             properties:
-              status:
-                type: integer
-                example: 200
               isSuccess:
                 type: boolean
                 example: true
               code:
                 type: integer
-                example: 2000
-              message:
-                type: string
-                example: "success!"
-              data:
-                type: object
-                example: {
-                  "id": "swaggerTest@mail.com",
-                  "password": "12345678910"
-                }
-                
-        '400':
-          description: 잘못된 요청
-          schema:
-            type: object
-            properties:
-              status:
-                type: integer
-                example: 400
-              isSuccess:
-                type: boolean
-                example: false
-              code:
-                type: integer
-                example: COMMON001
-              message:
-                type: string
-                example: 잘못된 요청입니다
-
-        '500':
-          description: 서버 에러
-          schema:
-            type: object
-            properties:
-              status:
-                type: integer
-                example: 500
-              isSuccess:
-                type: boolean
-                example: false
-              code:
-                type: integer
-                example: COMMON000
-              message:
-                type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
-  /user/delete/{id}:
-    delete:
-      tags:
-        - User
-      summary: 회원 탈퇴
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: 탈퇴하려는 사용자의 ID
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
-        description: Bearer token 작성하기
-      responses:
-        '200':
-          description: 회원 탈퇴 성공
-          schema:
-            type: object
-            properties:
-              status:
-                type: integer
                 example: 200
               message:
                 type: string
-                example: "삭제되었습니다"
-        '404':
-          description: 사용자를 찾을 수 없음
-          schema:
-            type: object
-            properties:
-              status:
-                type: integer
-                example: 404
-              message:
-                type: string
-                example: "사용자를 찾을 수 없습니다"
-        '500':
-          description: 서버 에러
-          schema:
-            type: object
-            properties:
-              status:
-                type: integer
-                example: 500
-              message:
-                type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
+                example: '로그인 성공'
+              data:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  userId:
+                    type: string
+                    example: "userId123"
+
   /user/logout:
     post:
       tags:
         - User
       summary: 로그아웃
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
-        description: "Bearer token 작성하기"
-
       responses:
         '200':
           description: 로그아웃 성공
           schema:
             type: object
             properties:
-              status:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
                 type: integer
                 example: 200
               message:
                 type: string
-                example: "로그아웃 성공"
-        '500':
-          description: 서버 에러
+                example: '로그아웃 성공'
+
+  /user/mypage:
+    get:
+      tags:
+        - User
+      summary: 마이페이지 조회
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 마이페이지 조회 성공
           schema:
             type: object
             properties:
-              status:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
                 type: integer
-                example: 500
+                example: 200
               message:
                 type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
+                example: '마이페이지 조회 성공'
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "userId123"
+                  name:
+                    type: string
+                    example: "swagger"
+                  password:
+                    type: string
+                    example: "12345678910"
 
+  /user/findPW:
+    post:
+      tags:
+        - User
+      summary: 비밀번호 찾기
+      parameters:
+        - name: id
+          in: formData
+          description: 유저 이메일
+          required: true
+          type: string
+          example: swaggerTest@mail.com
+        - name: userInputCode
+          in: formData
+          description: 사용자로부터 입력받은 인증 코드
+          required: false
+          type: string
+          example: '1234' # Optional if not provided initially
+      responses:
+        '200':
+          description: 임시 비밀번호 전송 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: '임시 비밀번호가 이메일로 전송되었습니다.'
+
+  /user/edit:
+    post:
+      tags:
+        - User
+      summary: 회원정보 수정
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: password
+          in: formData
+          description: 새로운 비밀번호
+          required: true
+          type: string
+          example: 'newPassword123'
+        - name: name
+          in: formData
+          description: 새로운 유저 이름
+          required: true
+          type: string
+          example: 'newSwagger'
+        - name: confirmPassword
+          in: formData
+          description: 비밀번호 확인 용도
+          required: true
+          type: string
+          example: 'newPassword123'
+      responses:
+        '201':
+          description: 회원정보 수정 완료
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: '정보 수정 완료'
+
+  /user/delete:
+    delete:
+      tags:
+        - User
+      summary: 회원탈퇴
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 회원탈퇴 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: '삭제되었습니다'

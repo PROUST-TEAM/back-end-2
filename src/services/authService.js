@@ -17,7 +17,6 @@ const generateRandomPassword=()=> {
     }
     return password;
 }
-
 export const loginService = async (id, password) => {
   const user = await User.findById(id);
   if (!id || !password) {
@@ -45,10 +44,9 @@ export const loginService = async (id, password) => {
   );
   return { message:'로그인 성공',token: token, userId: user.ID.toString() };
 };
-
-export const signupService = async (id, password, userName, confirmPassword) => {
-  
-    if (!id || !password || !userName) {
+export const signupService = async (id, password, userName, confirmPassword, UserAgree) => {
+ 
+    if (!id || !password || !userName|| !UserAgree) {
       throw new Error(status.SIGNUP_INPUT_EMPTY);
     }
     if (!isEmail(id)) {
@@ -64,8 +62,11 @@ export const signupService = async (id, password, userName, confirmPassword) => 
     if (existingUser) {
       throw new Error(status.SIGNUP_ID_DUPLICATE);
     }
+    if(parseInt(UserAgree)===0){
+      throw new Error("약관 동의가 되지 않았습니다");
+    }
     const hashedPassword = await bcrypt.hash(password, 12);
-    const result = await User.addUser(id, userName, hashedPassword);
+    const result = await User.addUser(id, userName, hashedPassword, UserAgree);
     return { message: "회원가입 완료", userId: result.id };
  
 };
@@ -89,20 +90,20 @@ export const myPageService = async(UserID) => {
 
 export const infoEditService = async(UserID, password, userName, confirmPassword) => {
     if (!UserID || !password || !userName) {
-      throw new Error(status.MEMBER_UPDATE_INPUT_EMPTY);
+      throw new Error(JSON.stringify(status.MEMBER_UPDATE_INPUT_EMPTY));
     }
     if (!isEmail(UserID)) {
-      throw new Error(status.MEMBER_UPDATE_ID_NOT_EMAIL);
+      throw new Error(JSON.stringify(status.MEMBER_UPDATE_ID_NOT_EMAIL));
     }
     if (password.length < 8) {
-      throw new Error(status.MEMBER_UPDATE_PASSWORD_SHORT);
+      throw new Error(JSON.stringify(status.MEMBER_UPDATE_PASSWORD_SHORT));
     }
     if (password !== confirmPassword) {
-      throw new Error(status.MEMBER_UPDATE_PASSWORD_NOT_MATCH);
+      throw new Error(JSON.stringify(status.MEMBER_UPDATE_PASSWORD_NOT_MATCH));
     }
     const existingUser = await User.findById(UserID);
       if (!existingUser) {
-        throw new Error(status.MEMBER_UPDATE_NOT_MEMBER);
+        throw new Error(JSON.stringify(status.MEMBER_UPDATE_NOT_MEMBER));
     }
     const hashedPassword = await bcrypt.hash(password, 12);
     const result = await User.updateUser(UserID,userName, hashedPassword);

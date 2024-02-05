@@ -5,6 +5,7 @@ export const Login = async (req, res, next) => {
   const id = req.body.id;
   const password = req.body.password;
   const result = await authService.loginService(id, password);
+  res.cookie('token', result.token, { httpOnly: true });
   res.status(200).json(response({ isSuccess: true, code: 200, message: '로그인 성공' }, result));
 };
 
@@ -18,7 +19,8 @@ export const Signup = async (req, res, next) => {
   const password = req.body.password;
   const userName = req.body.name;
   const confirmPassword = req.body.confirmPassword;
-  const result = await authService.signupService(id, password, userName, confirmPassword);
+  const UserAgree= req.body.UserAgree;
+  const result = await authService.signupService(id, password, userName, confirmPassword,UserAgree);
   res.status(201).json(response({ isSuccess: true, code: 200, message: '회원가입 완료' }, result));
 };
 
@@ -57,11 +59,4 @@ export const findPW = async (req, res, next) => {
   }
 };
 
-export const kakaoLogin = async(req,res,next)=>{
-  const headers =req.headers["authorization"];
-  const kakaoToken = headers.split(" ")[1];
-  const accessToken = await authService.kakaoService(kakaoToken);
-
-  return res.status(200).json(response({isSuccess: true, code: 200, accessToken: accessToken }));
-}
 

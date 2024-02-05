@@ -4,7 +4,7 @@ import cors from "cors";
 // import path from "path";
 import bodyParser from "body-parser";
 import { response } from "./config/response.js";
-
+import cookieParser from 'cookie-parser';
 import { UserRoutes } from "./src/routes/user.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
 import { BaseError } from "./config/error.js";
@@ -26,6 +26,7 @@ app.use(express.static("uploads")); // 'uploads'는 이미지 파일이 저장�
 //app.use(session({secret:'my secret',resave: false, saveUninitialized: false}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "public")));
 
 // swagger
