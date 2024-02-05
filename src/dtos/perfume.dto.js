@@ -38,3 +38,31 @@ export const addperfumeWriteResponseDTO = (perfumeWrite) => {
 // export const addperfumeDeleteResponseDTO = (perfumeWrite) => {
 //   return { Content: perfumeWrite[0].Content };
 // };
+
+// 향수 코멘트 조회 (로그인 유저)
+export const previewperfumeCommentContentUserResponseDTO = (data) => {
+  const perfume_comment_contents_user = [];
+
+  for (let i = 0; i < data.length; i++) {
+    perfume_comment_contents_user.push({
+      Content: data[i].Content,
+    });
+  }
+
+  console.log(perfume_comment_contents_user);
+  return { perfume_comment_contents_userData: perfume_comment_contents_user };
+};
+
+// 향수 코멘트 조회 (비로그인 유저)
+export const previewperfumeCommentContentResponseDTO = (data) => {
+  const perfume_comment_contents = [];
+
+  for (let i = 0; i < data.length; i++) {
+    perfume_comment_contents.push({
+      Content: data[i].Content,
+    });
+  }
+
+  console.log(perfume_comment_contents);
+  return { perfume_comment_contentsData: perfume_comment_contents };
+};

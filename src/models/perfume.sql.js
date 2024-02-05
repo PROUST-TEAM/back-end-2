@@ -15,3 +15,11 @@ export const getperfumeWriteID = "SELECT * FROM comment WHERE CommentID = ?;";
 // 향수 코멘트 삭제
 
 export const insertperfumeDeleteSql = "DELETE FROM comment WHERE PerfumeID = ? and UserID = ? and CommentID = ?";
+
+// 향수 코멘트 조회 (로그인 유저)
+
+export const getCommentUserId = "SELECT cm.Content " + "FROM comment cm JOIN perfume p ON cm.PerfumeId = p.PerfumeId " + "WHERE p.PerfumeId = ? ;";
+
+// 향수 코멘트 조회 (비로그인 유저) -- 최신 댓글 3개까지
+
+export const getCommentId = "SELECT cm.Content " + "FROM comment cm JOIN perfume p ON cm.PerfumeId = p.PerfumeId " + "WHERE p.PerfumeId = ?" + "ORDER BY cm.Created_At DESC LIMIT 3 ;";

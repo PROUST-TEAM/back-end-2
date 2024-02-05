@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { perfumeContent, categoryContent } from "../providers/perfume.provider.js";
+import { perfumeContent, categoryContent, perfumeCommentContentUser, perfumeCommentContent } from "../providers/perfume.provider.js";
 import { joinperfumeWrite, joinperfumeDelete } from "../services/perfume.service.js";
 
 export const perfumePreview = async (req, res, next) => {
@@ -36,4 +36,20 @@ export const perfumeDelete = async (req, res, next) => {
   // console.log(req.params.CommentID);
 
   res.send(response(status.SUCCESS, await joinperfumeDelete(req.params.PerfumeID, req.params.UserID, req.params.CommentID)));
+};
+
+export const perfumeReadUser = async (req, res, next) => {
+  console.log("향수 코멘트 조회(로그인 유저)를 요청하였습니다!");
+
+  console.log(req.params.PerfumeID);
+
+  return res.send(response(status.SUCCESS, await perfumeCommentContentUser(req.params.PerfumeID)));
+};
+
+export const perfumeRead = async (req, res, next) => {
+  console.log("향수 코멘트 조회(비로그인 유저)를 요청하였습니다!");
+
+  console.log(req.params.PerfumeID);
+
+  return res.send(response(status.SUCCESS, await perfumeCommentContent(req.params.PerfumeID)));
 };

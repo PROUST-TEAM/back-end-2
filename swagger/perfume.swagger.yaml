@@ -311,3 +311,145 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
+  /{PerfumeID}/readUser:
+    get:
+      tags:
+        - Perfume
+      summary: 향수 코멘트 조회 (로그인 유저)
+      parameters:
+        - name: PerfumeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 조회하려는 후기의 향수의 번호
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer token 작성하기
+      responses:
+        "200":
+          description: 향수 코멘트 조회 (로그인 유저) 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+
+        "400":
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        "500":
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /{PerfumeID}/read:
+    get:
+      tags:
+        - Perfume
+      summary: 향수 코멘트 조회 (비로그인 유저)
+      parameters:
+        - name: PerfumeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 조회하려는 후기의 향수의 번호
+      responses:
+        "200":
+          description: 향수 코멘트 조회 (비로그인 유저) 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+
+        "400":
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        "500":
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
