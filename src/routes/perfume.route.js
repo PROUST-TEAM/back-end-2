@@ -1,7 +1,7 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
 
-import { perfumePreview, categoryPreview, perfumeWrite, perfumeDelete, perfumeReadUser, perfumeRead } from "../controllers/perfume.controller.js";
+import { perfumePreview, categoryPreview, perfumeWrite, perfumeDelete, perfumeReadUser, perfumeRead, perfumeLike } from "../controllers/perfume.controller.js";
 import { isAuth } from "../middlewares/jwt.js";
 
 export const perfumeRouter = express.Router({ mergeParams: true });
@@ -12,3 +12,5 @@ perfumeRouter.post("/write/:UserID", isAuth, asyncHandler(perfumeWrite));
 perfumeRouter.delete("/delete/:UserID/:CommentID", isAuth, asyncHandler(perfumeDelete));
 perfumeRouter.get("/readUser", asyncHandler(perfumeReadUser));
 perfumeRouter.get("/read", asyncHandler(perfumeRead));
+
+perfumeRouter.patch("/likePerfumes/:UserID", asyncHandler(perfumeLike));

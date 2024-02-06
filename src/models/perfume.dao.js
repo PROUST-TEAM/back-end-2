@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.config.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getPerfumeId, getcategoryId, getperfumeWriteID, insertperfumeWriteSql, insertperfumeDeleteSql, getCommentUserId, getCommentId } from "./perfume.sql.js";
+import { getPerfumeId, getcategoryId, getperfumeWriteID, insertperfumeWriteSql, insertperfumeDeleteSql, getCommentUserId, getCommentId, insertPerfumeLikeSql, updatePerfumeLikeSql, getPerfumeLikeStatusSql } from "./perfume.sql.js";
 
 // 향수 상세 정보 조회
 export const getPreviewperfumeContent = async (PerfumeID) => {
@@ -108,6 +108,33 @@ export const getPreviewperfumeCommentContent = async (PerfumeID) => {
     conn.release();
     return perfume_comment_contents;
   } catch (err) {
+    throw new BaseError(status.PARAMETER_IS_WRONG);
+  }
+};
+
+// 향수 찜하기
+export const changeperfumeLike = async (PerfumeID, UserID) => {
+  try {
+    const conn = await pool.getConnection();
+    // console.log("Changing perfumeWrite:", PerfumeID, UserID); // 추가: 데이터가 올바르게 전달되는지 확인하기 위한 로그
+
+    const [existingLike] = await pool.query(getPerfumeLikeStatusSql, [PerfumeID, UserID]);
+
+    let result;
+
+    if (existingLike.length === 0) {
+      // 찜이 없는 경우, 새로운 찜 생성
+      result = await pool.query(insertPerfumeLikeSql, [PerfumeID, UserID, "A"]);
+    } else {
+      // 찜이 있는 경우, 찜 상태 업데이트 (A -> D, D -> A)
+      const newStatus = existingLike[0].Status === "A" ? "D" : "A";
+      result = await pool.query(updatePerfumeLikeSql, [newStatus, PerfumeID, UserID]);
+    }
+
+    conn.release();
+    return result[0].insertId;
+  } catch (err) {
+    console.error("Error in changeperfumeLike:", err); // 추가: 에러 발생 시 에러 메시지 출력
     throw new BaseError(status.PARAMETER_IS_WRONG);
   }
 };

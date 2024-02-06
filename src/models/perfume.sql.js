@@ -23,3 +23,12 @@ export const getCommentUserId = "SELECT cm.Content " + "FROM comment cm JOIN per
 // 향수 코멘트 조회 (비로그인 유저) -- 최신 댓글 3개까지
 
 export const getCommentId = "SELECT cm.Content " + "FROM comment cm JOIN perfume p ON cm.PerfumeId = p.PerfumeId " + "WHERE p.PerfumeId = ?" + "ORDER BY cm.Created_At DESC LIMIT 3 ;";
+
+// 찜 상태 조회
+export const getPerfumeLikeStatusSql = "SELECT up.Status FROM userperfume up WHERE up.PerfumeID = ? and up.UserID = ?;";
+
+// 찜 생성
+export const insertPerfumeLikeSql = "INSERT INTO userperfume (PerfumeID, UserID, Status) VALUES (?, ?, ?);";
+
+// 찜 상태 업데이트
+export const updatePerfumeLikeSql = "UPDATE userperfume SET Status = ? WHERE PerfumeID = ? and UserID = ?;";
