@@ -147,11 +147,11 @@ export const findPWService = async(id, userInputCode) => {
 };
 export const emailAuth = async(id) => {
     try {
-        // 인증 코드 생성 및 데이터베이스에 저장
+     
         const authCode = await User.createAuthcode(id);
         const mailOptions = {
-            from : "qws1566@naver.com ", // 발신자 이메일 주소.
-            to : id, // 사용자가 입력한 이메일 -> 목적지 주소 이메일
+            from : "qws1566@naver.com ",
+            to : id, 
             subject : "인증 관련 메일 입니다. ",
             html : '<h1>인증번호를 입력해주세요 \n\n\n\n\n\n</h1>' + authCode
         }
@@ -162,11 +162,11 @@ export const emailAuth = async(id) => {
                 if(err) {
                     console.log(' 메일 전송에 실패하였습니다. ');
                     console.log(err);
-                    smtpTransport.close(); //전송종료
+                    smtpTransport.close(); 
                     reject(new Error(' 메일 전송에 실패하였습니다. '));
                 } else {
                     console.log(' 메일 전송에 성공하였습니다. ');
-                    smtpTransport.close(); //전송종료
+                    smtpTransport.close(); 
                     resolve(); 
                 }
             });
