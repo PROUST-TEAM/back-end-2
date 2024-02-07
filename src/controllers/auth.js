@@ -1,103 +1,62 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-
-import { User } from "../models/user.js";
-import { validationResult } from "express-validator";
+import * as authService from '../services/authService.js'
+import { response } from '../../config/response.js';
 
 export const Login = async (req, res, next) => {
-  //로그인
   const id = req.body.id;
   const password = req.body.password;
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      const error = new Error("사용자를 찾을 수 없습니다");
-      error.statusCode = 401;
-      throw error;
-    }
-    const doMatch = await bcrypt.compare(password, user.Password);
-    if (!doMatch) {
-      const error = new Error("로그인 할 수 없습니다");
-      error.statusCode = 401;
-      throw error;
-    }
-    const token = jwt.sign(
-      {
-        userId: user.ID.toString(),
-      },
-      "secretsecretsecret",
-      { expiresIn: "1h" }
-    );
-    res.status(200).json({ message:'로그인 성공',token: token, userId: user.ID.toString() });
-  
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
+  const result = await authService.loginService(id, password);
+  res.cookie('token', result.token, { httpOnly: true });
+  res.status(200).json(response({ isSuccess: true, code: 200, message: '로그인 성공' }, result));
 };
 
 export const logout = (req, res, next) => {
-  // 로그아웃
-  console.log("로그아웃 성공");
-  return res.clearCookie("token").end();
+  res.clearCookie("token");
+  res.status(200).json(response({ isSuccess: true, code: 200, message: '로그아웃 성공' }));
 };
 
 export const Signup = async (req, res, next) => {
-  // 회원가입
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new Error("에러가 발생하였습니다");
-    error.statusCode = 422;
-    error.data = errors.array();
-    throw error;
-  }
   const id = req.body.id;
   const password = req.body.password;
   const userName = req.body.name;
   const confirmPassword = req.body.confirmPassword;
-  if (password !== confirmPassword) {
-    const error = new Error("비밀번호가 일치하지 않습니다");
-    error.statusCode = 422;
-    throw error;
-  }
-  try {
-    const existingUser = await User.findById(id);
-    if (existingUser) {
-      const error = new Error("존재하는 아이디 입니다");
-      error.statusCode = 401;
-      throw error;
-    }
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const result = await User.addUser(id, userName, hashedPassword);
-    res.status(201).json({ message: "회원가입 완료", userId: result.id });
-    console.log("회원가입 완료");
-  } catch (err) {
-    console.error("사용자 저장 중 에러 발생", err);
-    const error = new Error("에러 발생");
-    error.statusCode = 500;
-    throw error;
-  }
+  const UserAgree= req.body.UserAgree;
+  const result = await authService.signupService(id, password, userName, confirmPassword,UserAgree);
+  res.status(201).json(response({ isSuccess: true, code: 200, message: '회원가입 완료' }, result));
 };
 
 export const UserDelete = async (req, res, next) => {
-  //회원탈퇴
-  const UserID = req.params.id;
-  try {
-    const user = await User.findById(UserID);
-    if (!user) {
-      const error = new Error("사용자를 찾을 수 없습니다");
-      error.statusCode = 404;
-      throw error;
-    }
-    const result = await User.deleteById(UserID);
-    console.log("삭제되었습니다", result);
-    res.status(200).json({ message: "삭제되었습니다" });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+  const UserID = req.userId;
+  const result = await authService.userDeleteService(UserID);
+  res.status(200).json(response({ isSuccess: true, code: 200, message: '삭제 성공' }, result));
+};
+
+export const myPage= async (req,res,next)=>{
+  const UserID = req.userId;
+  const result = await authService.myPageService(UserID);
+  res.status(200).json(response({ isSuccess: true, code: 200, message: 'mypage 조회 성공' }, result));
+};
+
+export const InfoEdit= async (req,res,next)=>{
+  const UserID =req.userId;
+  const password = req.body.password;
+  const userName = req.body.name;
+  const confirmPassword = req.body.confirmPassword;
+  const result = await authService.infoEditService(UserID, password, userName, confirmPassword);
+  res.status(200).json(response({ isSuccess: true, code: 201, message: '정보 수정 완료' }, result));
+};
+
+export const findPW = async (req, res, next) => {
+  const { id, userInputCode } = req.body;
+
+  if (userInputCode) {
+    // 사용자로부터 인증번호를 받았을 때
+    await authService.findPWService(id, userInputCode);
+    res.status(200).json(response({ isSuccess: true, code: 200, message: '임시 비밀번호가 이메일로 전송되었습니다.' }));
+  } else {
+    // 사용자로부터 인증번호를 받지 않았을 때 (처음 호출될 때)
+    await authService.emailAuth(id);
+    res.status(200).json(response({ isSuccess: true, code: 200, message: '인증번호가 이메일로 전송되었습니다.' }));
   }
 };
+
+
