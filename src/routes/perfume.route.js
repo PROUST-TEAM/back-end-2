@@ -9,7 +9,7 @@ export const perfumeRouter = express.Router({ mergeParams: true });
 perfumeRouter.get("/getPerfumes", asyncHandler(perfumePreview));
 perfumeRouter.get("/getCategories", asyncHandler(categoryPreview));
 perfumeRouter.post("/write/:UserID", isAuth, asyncHandler(perfumeWrite));
-perfumeRouter.delete("/delete/:UserID/:CommentID", isAuth, asyncHandler(perfumeDelete));
+perfumeRouter.delete("/delete/:UserID/:Content", isAuth, asyncHandler(perfumeDelete));
 perfumeRouter.get("/readUser", asyncHandler(perfumeReadUser));
 perfumeRouter.get("/read", asyncHandler(perfumeRead));
 

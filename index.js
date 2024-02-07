@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 
 // app.use("/temp", tempRouter);
 app.use("/user", UserRoutes);
-app.use("/:PerfumeID", perfumeRouter);
+app.use("/:Name", perfumeRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

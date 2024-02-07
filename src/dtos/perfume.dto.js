@@ -31,7 +31,12 @@ export const previewcategoryContentResponseDTO = (data) => {
 
 // 향수 코멘트 작성
 export const addperfumeWriteResponseDTO = (perfumeWrite) => {
-  return { Content: perfumeWrite[0].Content };
+  if (perfumeWrite && perfumeWrite.length > 0) {
+    return { Content: perfumeWrite[0].Content };
+  } else {
+    // 적절한 오류 처리를 추가하세요
+    return { Error: "No data found" };
+  }
 };
 
 // 향수 코멘트 삭제

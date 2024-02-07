@@ -1,14 +1,14 @@
 paths:
-  /{PerfumeID}/getPerfumes:
+  /{Name}/getPerfumes:
     get:
       tags:
         - Perfume
       summary: 향수 상세 정보 조회 로직
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           schema:
-            type: integer
+            type: string
           required: true
       responses:
         "200":
@@ -67,16 +67,16 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/getCategories:
+  /{Name}/getCategories:
     get:
       tags:
         - Perfume
       summary: 향수 카테고리 정보 조회 로직
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           schema:
-            type: integer
+            type: string
           required: true
       responses:
         "200":
@@ -135,18 +135,20 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/write/{UserID}:
+  /{Name}/write/{UserID}:
     post:
       tags:
         - Perfume
       summary: 향수 코멘트 작성
+      security:
+        - BearerAuth: []
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           required: true
           schema:
-            type: integer
-          description: 작성하려는 향수의 번호
+            type: string
+          description: 작성하려는 향수의 이름
         - name: UserID
           in: path
           required: true
@@ -162,12 +164,6 @@ paths:
                 type: string
                 description: 향수 코멘트 내용
                 example: perfume content
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: Bearer token 작성하기
       responses:
         "200":
           description: 향수 코멘트 작성 성공!
@@ -188,7 +184,7 @@ paths:
                 example: "success!"
               data:
                 type: object
-                example: { "UserID": 1, "PerfumeID": 1, "Content": "perfume content" }
+                example: { "UserID": 1, "Name": "for Her", "Content": "perfume content" }
 
         "400":
           description: 잘못된 요청
@@ -225,36 +221,32 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/delete/{UserID}/{CommentID}:
+  /{Name}/delete/{UserID}/{Content}:
     delete:
       tags:
         - Perfume
       summary: 향수 코멘트 삭제
+      security:
+        - BearerAuth: []
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           required: true
           schema:
-            type: integer
-          description: 삭제하려는 후기의 향수의 번호
+            type: string
+          description: 삭제하려는 후기의 향수의 이름
         - name: UserID
           in: path
           required: true
           schema:
             type: integer
           description: 삭제하려는 후기의 사용자의 번호
-        - name: CommentID
+        - name: Content
           in: path
           required: true
           schema:
             type: integer
-          description: 삭제하려는 후기의 후기의 번호
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: Bearer token 작성하기
+          description: 삭제하려는 후기의 내용
       responses:
         "200":
           description: 향수 코멘트 삭제 성공!
@@ -311,24 +303,20 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/readUser:
+  /{Name}/readUser:
     get:
       tags:
         - Perfume
       summary: 향수 코멘트 조회 (로그인 유저)
+      security:
+        - BearerAuth: []
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           required: true
           schema:
-            type: integer
-          description: 조회하려는 후기의 향수의 번호
-        - name: Authorization
-          in: header
-          required: true
-          schema:
             type: string
-          description: Bearer token 작성하기
+          description: 조회하려는 후기의 향수의 이름
       responses:
         "200":
           description: 향수 코멘트 조회 (로그인 유저) 성공!
@@ -385,18 +373,18 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/read:
+  /{Name}/read:
     get:
       tags:
         - Perfume
       summary: 향수 코멘트 조회 (비로그인 유저)
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           required: true
           schema:
-            type: integer
-          description: 조회하려는 후기의 향수의 번호
+            type: string
+          description: 조회하려는 후기의 향수의 이름
       responses:
         "200":
           description: 향수 코멘트 조회 (비로그인 유저) 성공!
@@ -453,30 +441,26 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/likePerfumes/{UserID}:
+  /{Name}/likePerfumes/{UserID}:
     patch:
       tags:
         - Perfume
       summary: 향수 찜하기 기능
+      security:
+        - BearerAuth: []
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           required: true
           schema:
-            type: integer
-          description: 찜하려는 향수의 번호
+            type: string
+          description: 찜하려는 향수의 이름
         - name: UserID
           in: path
           required: true
           schema:
             type: integer
           description: 찜하는 사용자의 번호
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: Bearer token 작성하기
       responses:
         "200":
           description: 향수 찜하기 성공!
