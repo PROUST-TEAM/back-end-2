@@ -1,7 +1,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { perfumeContent, categoryContent, perfumeCommentContentUser, perfumeCommentContent } from "../providers/perfume.provider.js";
+import { perfumeContent, categoryContent, likeContent, perfumeCommentContentUser, perfumeCommentContent } from "../providers/perfume.provider.js";
 import { joinperfumeWrite, joinperfumeDelete, perfumeLikeContent } from "../services/perfume.service.js";
 
 export const perfumePreview = async (req, res, next) => {
@@ -16,6 +16,13 @@ export const categoryPreview = async (req, res, next) => {
   //   console.log(req.params.PerfumeID);
 
   return res.send(response(status.SUCCESS, await categoryContent(req.params.Name)));
+};
+
+export const likePreview = async (req, res, next) => {
+  console.log("향수 찜 정보 조회를 요청하였습니다!");
+  //   console.log(req.params.PerfumeID);
+
+  return res.send(response(status.SUCCESS, await likeContent(req.params.Name, req.params.UserID)));
 };
 
 export const perfumeWrite = async (req, res, next) => {

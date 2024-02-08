@@ -29,6 +29,20 @@ export const previewcategoryContentResponseDTO = (data) => {
   return { category_contentsData: category_contents };
 };
 
+// 향수 찜 정보 조회
+export const previewlikeContentResponseDTO = (data) => {
+  const like_contents = [];
+
+  for (let i = 0; i < data.length; i++) {
+    like_contents.push({
+      status: data[i].Status,
+    });
+  }
+
+  console.log(like_contents);
+  return { like_contentsData: like_contents };
+};
+
 // 향수 코멘트 작성
 export const addperfumeWriteResponseDTO = (perfumeWrite) => {
   if (perfumeWrite && perfumeWrite.length > 0) {
