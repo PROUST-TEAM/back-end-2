@@ -7,6 +7,7 @@ import { response } from "./config/response.js";
 import cookieParser from 'cookie-parser';
 import { UserRoutes } from "./src/routes/user.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
+import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
 import { BaseError } from "./config/error.js";
 import { status } from "./config/response.status.js";
 import { specs } from "./config/swagger.config.js";
@@ -48,6 +49,7 @@ app.get("/", (req, res) => {
 // app.use("/temp", tempRouter);
 app.use("/user", UserRoutes);
 app.use("/:Name", perfumeRouter);
+app.use("/perfumeList", perfumeListRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

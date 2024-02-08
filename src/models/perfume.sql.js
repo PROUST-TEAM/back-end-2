@@ -34,3 +34,7 @@ export const insertPerfumeLikeSql = "INSERT INTO userperfume (UserID, Status, Pe
 
 // 찜 상태 업데이트
 export const updatePerfumeLikeSql = "UPDATE userperfume SET Status = ? WHERE UserID = ? and PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?);";
+
+// 취'향'목록 조회
+
+// export const getPerfumeListId = "SELECT p.Name, p.Image, up.Status, c.Keyword " + "FROM perfume p JOIN userperfume up ON up.PerfumeID = p.PerfumeID JOIN PerfumeCategory pc ON pc.PerfumeID = p.PerfumeID JOIN Category c ON pc.CategoryID = c.CategoryID " + "WHERE up.UserID = ? AND up.Status = 'A' AND (c.Keyword IN (?) OR ? IS NULL);";

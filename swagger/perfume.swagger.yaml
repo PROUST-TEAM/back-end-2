@@ -517,3 +517,47 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
+  /perfumeList/{UserID}:
+    get:
+      tags:
+        - PerfumeList
+      summary: 취'향'목록 조회
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: UserID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 취'향'목록 조회 사용자의 번호
+        - name: Keyword
+          in: query
+          description: 향수의 카테고리
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+      responses:
+        "200":
+          description: 취'향'목록 조회 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: array
+                example: { "perfumeList_contentsData": [{ "name": "Eau Duelle", "imageUrl": "uploads/1.png", "status": "A", "keyword": "우드" }] }
