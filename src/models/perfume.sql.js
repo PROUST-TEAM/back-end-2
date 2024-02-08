@@ -6,6 +6,10 @@ export const getPerfumeId = "SELECT p.Name, p.NameKor, p.Description, p.Image " 
 
 export const getcategoryId = "SELECT c.Keyword " + "FROM PerfumeCategory pc " + "JOIN Perfume p ON pc.PerfumeID = p.PerfumeID " + "JOIN Category c ON pc.CategoryID = c.CategoryID " + "WHERE p.Name = ?;";
 
+// 향수 찜 정보 조회
+
+export const getlikeId = "SELECT up.Status " + "FROM userperfume up " + "JOIN Perfume p ON up.PerfumeID = p.PerfumeID " + "JOIN User u ON up.UserID = u.UserID " + "WHERE p.Name = ? AND u.UserID = ?;";
+
 // 향수 코멘트 작성
 
 export const confirmComment = "SELECT EXISTS(SELECT 1 FROM comment WHERE UserID = ? and Content = ?) as isExistComment;";

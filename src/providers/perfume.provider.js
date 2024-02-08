@@ -1,5 +1,5 @@
-import { previewperfumeContentResponseDTO, previewcategoryContentResponseDTO, previewperfumeCommentContentUserResponseDTO, previewperfumeCommentContentResponseDTO } from "../dtos/perfume.dto.js";
-import { getPreviewperfumeContent, getPreviewcategoryContent, getPreviewperfumeCommentContentUser, getPreviewperfumeCommentContent } from "../models/perfume.dao.js";
+import { previewperfumeContentResponseDTO, previewcategoryContentResponseDTO, previewlikeContentResponseDTO, previewperfumeCommentContentUserResponseDTO, previewperfumeCommentContentResponseDTO } from "../dtos/perfume.dto.js";
+import { getPreviewperfumeContent, getPreviewcategoryContent, getPreviewlikeContent, getPreviewperfumeCommentContentUser, getPreviewperfumeCommentContent } from "../models/perfume.dao.js";
 
 export const perfumeContent = async (Name) => {
   // console.log(PerfumeID);
@@ -9,6 +9,11 @@ export const perfumeContent = async (Name) => {
 export const categoryContent = async (Name) => {
   // console.log(PerfumeID);
   return previewcategoryContentResponseDTO(await getPreviewcategoryContent(Name));
+};
+
+export const likeContent = async (Name, UserID) => {
+  // console.log(PerfumeID);
+  return previewlikeContentResponseDTO(await getPreviewlikeContent(Name, UserID));
 };
 
 export const perfumeCommentContentUser = async (Name) => {

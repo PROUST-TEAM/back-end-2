@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.config.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getPerfumeId, getcategoryId, getperfumeWriteID, insertperfumeWriteSql, insertperfumeDeleteSql, getCommentUserId, getCommentId, insertPerfumeLikeSql, updatePerfumeLikeSql, getPerfumeLikeStatusSql, confirmComment } from "./perfume.sql.js";
+import { getPerfumeId, getcategoryId, getlikeId, getperfumeWriteID, insertperfumeWriteSql, insertperfumeDeleteSql, getCommentUserId, getCommentId, insertPerfumeLikeSql, updatePerfumeLikeSql, getPerfumeLikeStatusSql, confirmComment } from "./perfume.sql.js";
 
 // 향수 상세 정보 조회
 export const getPreviewperfumeContent = async (Name) => {
@@ -26,6 +26,20 @@ export const getPreviewcategoryContent = async (Name) => {
     const [category_contents] = await pool.query(getcategoryId, Name);
     conn.release();
     return category_contents;
+  } catch (err) {
+    throw new BaseError(status.PARAMETER_IS_WRONG);
+  }
+};
+
+// 향수 찜 정보 조회
+export const getPreviewlikeContent = async (Name, UserID) => {
+  try {
+    const conn = await pool.getConnection();
+
+    // console.log("Query Parameters:", Name);
+    const [like_contents] = await pool.query(getlikeId, [Name, UserID]);
+    conn.release();
+    return like_contents;
   } catch (err) {
     throw new BaseError(status.PARAMETER_IS_WRONG);
   }
