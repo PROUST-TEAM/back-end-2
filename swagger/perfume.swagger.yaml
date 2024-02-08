@@ -1,14 +1,14 @@
 paths:
-  /{PerfumeID}/getPerfumes:
+  /{Name}/getPerfumes:
     get:
       tags:
         - Perfume
       summary: 향수 상세 정보 조회 로직
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           schema:
-            type: integer
+            type: string
           required: true
       responses:
         "200":
@@ -67,16 +67,16 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/getCategories:
+  /{Name}/getCategories:
     get:
       tags:
         - Perfume
       summary: 향수 카테고리 정보 조회 로직
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
           schema:
-            type: integer
+            type: string
           required: true
       responses:
         "200":
@@ -135,42 +135,28 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/write/{UserID}:
-    post:
+  /{Name}/getLikes/{UserID}:
+    get:
       tags:
         - Perfume
-      summary: 향수 코멘트 작성
+      summary: 향수 찜 정보 조회 로직
+      security:
+        - BearerAuth: []
       parameters:
-        - name: PerfumeID
+        - name: Name
           in: path
-          required: true
           schema:
-            type: integer
-          description: 작성하려는 향수의 번호
+            type: string
+          required: true
         - name: UserID
           in: path
           required: true
           schema:
             type: integer
-          description: 작성하려는 사용자의 ID
-        - name: Comment
-          in: body
-          required: true
-          schema:
-            properties:
-              Content:
-                type: string
-                description: 향수 코멘트 내용
-                example: perfume content
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: Bearer token 작성하기
+          description: 찜 정보를 조회하려는 사용자의 ID
       responses:
         "200":
-          description: 향수 코멘트 작성 성공!
+          description: 향수 찜 정보 조회 성공
           schema:
             type: object
             properties:
@@ -187,8 +173,8 @@ paths:
                 type: string
                 example: "success!"
               data:
-                type: object
-                example: { "UserID": 1, "PerfumeID": 1, "Content": "perfume content" }
+                type: array
+                example: { "like_contentsData": [{ "status": "A" }] }
 
         "400":
           description: 잘못된 요청
@@ -225,36 +211,118 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{PerfumeID}/delete/{UserID}/{CommentID}:
-    delete:
+  /{Name}/write/{UserID}:
+    post:
       tags:
         - Perfume
-      summary: 향수 코멘트 삭제
+      summary: 향수 코멘트 작성
+      security:
+        - BearerAuth: []
       parameters:
-        - name: PerfumeID
+        - name: Name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 작성하려는 향수의 이름
+        - name: UserID
           in: path
           required: true
           schema:
             type: integer
-          description: 삭제하려는 후기의 향수의 번호
+          description: 작성하려는 사용자의 ID
+        - name: Comment
+          in: body
+          required: true
+          schema:
+            properties:
+              Content:
+                type: string
+                description: 향수 코멘트 내용
+                example: perfume content
+      responses:
+        "200":
+          description: 향수 코멘트 작성 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: { "UserID": 1, "Name": "for Her", "Content": "perfume content" }
+
+        "400":
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        "500":
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /{Name}/delete/{UserID}/{Content}:
+    delete:
+      tags:
+        - Perfume
+      summary: 향수 코멘트 삭제
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: Name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 삭제하려는 후기의 향수의 이름
         - name: UserID
           in: path
           required: true
           schema:
             type: integer
           description: 삭제하려는 후기의 사용자의 번호
-        - name: CommentID
+        - name: Content
           in: path
           required: true
           schema:
             type: integer
-          description: 삭제하려는 후기의 후기의 번호
-        - name: Authorization
-          in: header
-          required: true
-          schema:
-            type: string
-          description: Bearer token 작성하기
+          description: 삭제하려는 후기의 내용
       responses:
         "200":
           description: 향수 코멘트 삭제 성공!
@@ -311,3 +379,261 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
+  /{Name}/readUser:
+    get:
+      tags:
+        - Perfume
+      summary: 향수 코멘트 조회 (로그인 유저)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: Name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 조회하려는 후기의 향수의 이름
+      responses:
+        "200":
+          description: 향수 코멘트 조회 (로그인 유저) 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+
+        "400":
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        "500":
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /{Name}/read:
+    get:
+      tags:
+        - Perfume
+      summary: 향수 코멘트 조회 (비로그인 유저)
+      parameters:
+        - name: Name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 조회하려는 후기의 향수의 이름
+      responses:
+        "200":
+          description: 향수 코멘트 조회 (비로그인 유저) 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+
+        "400":
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        "500":
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /{Name}/likePerfumes/{UserID}:
+    patch:
+      tags:
+        - Perfume
+      summary: 향수 찜하기 기능
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: Name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 찜하려는 향수의 이름
+        - name: UserID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 찜하는 사용자의 번호
+      responses:
+        "200":
+          description: 향수 찜하기 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+
+        "400":
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        "500":
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /perfumeList/{UserID}:
+    get:
+      tags:
+        - PerfumeList
+      summary: 취'향'목록 조회
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: UserID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 취'향'목록 조회 사용자의 번호
+        - name: Keyword
+          in: query
+          description: 향수의 카테고리
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+      responses:
+        "200":
+          description: 취'향'목록 조회 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: array
+                example: { "perfumeList_contentsData": [{ "name": "Eau Duelle", "imageUrl": "uploads/1.png", "status": "A", "keyword": "우드" }] }

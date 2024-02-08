@@ -9,6 +9,15 @@ const options = {
     },
     host: "localhost:3000",
     basepath: "../",
+    securityDefinitions: {
+      // 보안 정의 추가
+      BearerAuth: {
+        type: "apiKey",
+        name: "Authorization",
+        scheme: "bearer",
+        in: "header",
+      },
+    },
   },
   apis: ["./src/routes/*.js", "./swagger/*"],
 };

@@ -28,6 +28,10 @@ export const status = {
   LOGIN_PARAM_NOT_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNIN4001", message: "ID 혹은 PW 값이 존재하지 않습니다." },
   LOGIN_ID_NOT_EXIST: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "SIGNIN4002", message: "아이디를 찾을 수 없습니다." },
   LOGIN_PASSWORD_WRONG: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SIGNIN4003", message: "비밀번호가 일치하지 않습니다." },
+
+  // comment err
+  COMMENT_ALREADY_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "COMMENT4001", message: "같은 내용의 코멘트가 존재합니다." },
+};
   LOGIN_ID_OR_PASSWORD_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "LOGIN4001", message: "ID 혹은 PW 값이 존재하지 않습니다." },
   LOGIN_ID_NOT_EMAIL: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "LOGIN4002", message: "ID는 이메일 형식이어야 합니다." },
   LOGIN_PASSWORD_SHORT: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "LOGIN4003", message: "비밀번호는 8자리 이상이어야 합니다." },

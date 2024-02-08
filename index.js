@@ -7,6 +7,7 @@ import { response } from "./config/response.js";
 
 import { UserRoutes } from "./src/routes/user.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
+import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
 import { AIRoutes } from "./src/routes/ai.route.js";
 import { BaseError } from "./config/error.js";
 import { status } from "./config/response.status.js";
@@ -47,7 +48,8 @@ app.get("/", (req, res) => {
 
 // app.use("/temp", tempRouter);
 app.use("/user", UserRoutes);
-app.use("/:PerfumeID", perfumeRouter);
+app.use("/:Name", perfumeRouter);
+app.use("/perfumeList", perfumeListRouter);
 app.use("/ai", AIRoutes);
 
 app.use((err, req, res, next) => {
