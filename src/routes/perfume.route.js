@@ -13,4 +13,4 @@ perfumeRouter.delete("/delete/:UserID/:Content", isAuth, asyncHandler(perfumeDel
 perfumeRouter.get("/readUser", asyncHandler(perfumeReadUser));
 perfumeRouter.get("/read", asyncHandler(perfumeRead));
 
-perfumeRouter.patch("/likePerfumes/:UserID", asyncHandler(perfumeLike));
+perfumeRouter.patch("/likePerfumes/:UserID", isAuth, asyncHandler(perfumeLike));
