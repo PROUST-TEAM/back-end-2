@@ -9,27 +9,32 @@ export const SocialNaver =()=>{
         callbackURL:'/user/naver/callback',
     },async(accessToken, refreshToken, profile, done)=>{
         try{
-            const exUser =await User.findBySocialId(profile.emails[0].value)
+            const exUser =await User.findBySocialId(profile._json.email)
             if(exUser){
                 const token =jwt.sign(
                     {
-                        userId:exUser.SNSAccountID.toString(),
+                        userId:exUser.ID.toString(),
                     },
-                    process.env.JWT_SECRET
-                ); return done(null, token);
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1h" }
+                ); 
+                
+                return done(null, token);
             }else{
                 const newUser = await User.addSocialUser(
                     "naver",
-                    profile.emails[0].value,
+                    profile._json.email,
                     profile.displayName,
                     null
                 );
                 const token= jwt.sign(
                     {
-                        userId: newUser.SNSAccountID.toString(),
+                        userId: newUser.ID.toString(),
                     },
-                    process.env.JWT_SECRET
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1h" }
                 );
+                
                 return done(null,token);
             } 
         }catch(error){
@@ -40,4 +45,4 @@ export const SocialNaver =()=>{
     )
     
     );
-};
+}

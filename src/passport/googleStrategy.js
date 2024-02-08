@@ -8,29 +8,29 @@ export const SocialGoogle =()=>{
         clientSecret:process.env.GOOGLE_SECRET,
         callbackURL:'/user/google/callback',
     },async(accessToken, refreshToken, profile, done)=>{
-        console.log(profile.id);
-        console.log(profile.email);
         try{
-            const exUser =await User.findBySocialId(profile.id)
+            const exUser =await User.findBySocialId(profile._json.email)
             if(exUser){
                 const token =jwt.sign(
                     {
-                        userId:exUser.SNSAccountID.toString(),
+                        userId:exUser.ID.toString(),
                     },
-                    process.env.JWT_SECRET
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1h" }
                 ); return done(null, token);
             }else{
                 const newUser = await User.addSocialUser(
                     "google",
-                    profile.emails[0].value,
+                    profile._json.email,
                     profile.displayName,
                     null
                 );
                 const token= jwt.sign(
                     {
-                        userId: newUser.SNSAccountID.toString(),
+                        userId: newUser.ID.toString(),
                     },
-                    process.env.JWT_SECRET
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1h" }
                 );
                 return done(null,token);
             } 

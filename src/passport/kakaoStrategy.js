@@ -13,10 +13,12 @@ export const SocialKakao =()=>{
             if(exUser){
                 const token =jwt.sign(
                     {
-                        userId:exUser.SNSAccountID.toString(),
+                        userId:exUser.ID.toString(),
                     },
-                    process.env.JWT_SECRET
-                ); return done(null, token);
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1h" }
+                ); 
+                 return done(null, token);
             }else{
                 const newUser = await User.addSocialUser(
                     "kakao",
@@ -26,12 +28,13 @@ export const SocialKakao =()=>{
                 );
                 const token= jwt.sign(
                     {
-                        userId: newUser.SNSAccountID.toString(),
+                        userId: newUser.ID.toString(),
                     },
-                    process.env.JWT_SECRET
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1h" }
                 );
                 return done(null,token);
-            } 
+            }
         }catch(error){
                 console.error(error);
                 done(error);

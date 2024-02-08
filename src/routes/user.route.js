@@ -1,6 +1,6 @@
 import express from "express";
 import { isAuth } from "../middlewares/jwt.js";
-import { Login, logout, Signup, UserDelete, myPage, InfoEdit,findPW } from "../controllers/auth.js";
+import { Login, logout, Signup, UserDelete, myPage, InfoEdit,findPW, sendAuthCode } from "../controllers/auth.js";
 import asyncHandler from 'express-async-handler';
 import passport from "passport";
 import{SocialKakao} from "../passport/kakaoStrategy.js";
@@ -14,26 +14,25 @@ SocialGoogle();
 SocialNaver();
 
 UserRoutes.post("/login", asyncHandler(Login));
-UserRoutes.post("/signup",asyncHandler(Signup));
+UserRoutes.post("/signup/request",asyncHandler(sendAuthCode));
+UserRoutes.post("/signup/confirm",asyncHandler(Signup))
 UserRoutes.post("/logout", isAuth, asyncHandler(logout));
 UserRoutes.delete("/delete", isAuth, asyncHandler(UserDelete));
 UserRoutes.get("/mypage",isAuth, asyncHandler(myPage));
 UserRoutes.post("/edit",isAuth,asyncHandler(InfoEdit));
-UserRoutes.post("/findPW",asyncHandler(findPW));
+UserRoutes.post("/findPW/request",asyncHandler(sendAuthCode));
+UserRoutes.post("/findPW/confirm",asyncHandler(findPW))
 UserRoutes.get("/kakao", passport.authenticate("kakao", { session: false }));
 UserRoutes.get("/kakao/callback", passport.authenticate("kakao", { session: false, failureRedirect: "/" }), (req, res) => {
-    res.cookie('token', req.user, { httpOnly: true });
     res.status(200).json(response({ isSuccess: true, code: 200, message: '로그인에 성공하였습니다.'},req.user));
 });
 UserRoutes.get("/google", passport.authenticate("google", { session: false, scope:['profile','email'] }));
 UserRoutes.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: "/" }), (req, res) => {
-    res.cookie('token', req.user, { httpOnly: true });
-    res.status(200).json(response({ isSuccess: true, code: 200, message: '로그인에 성공하였습니다.'}, req.user ));
+    res.status(200).json(response({ isSuccess: true, code: 200, message: '로그인에 성공하였습니다.'}, req.user));
 });
 UserRoutes.get("/naver", passport.authenticate("naver", { session: false }));
 UserRoutes.get("/naver/callback", passport.authenticate("naver", { session: false, failureRedirect: "/" }), (req, res) => {
-    res.cookie('token', req.user, { httpOnly: true });
-    res.status(200).json(response({ isSuccess: true, code: 200, message: '로그인에 성공하였습니다.'}, req.user ));
+    res.status(200).json(response({ isSuccess: true, code: 200, message: '로그인에 성공하였습니다.'},req.user));
 });
 
 

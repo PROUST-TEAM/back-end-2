@@ -163,25 +163,34 @@ paths:
                     example: "userId123"
 
   /user/logout:
-    post:
-      tags:
-        - User
-      summary: 로그아웃
-      responses:
-        '200':
-          description: 로그아웃 성공
-          schema:
-            type: object
-            properties:
-              isSuccess:
-                type: boolean
-                example: true
-              code:
-                type: integer
-                example: 200
-              message:
-                type: string
-                example: '로그아웃 성공'
+  post:
+    tags:
+      - User
+    summary: 로그아웃
+    parameters:
+      - in: header
+        name: Authorization
+        schema:
+          type: string
+        required: true
+        description: "JWT 토큰 (형식: Bearer {토큰})"
+    responses:
+      '200':
+        description: 로그아웃 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isSuccess:
+                  type: boolean
+                  example: true
+                code:
+                  type: integer
+                  example: 200
+                message:
+                  type: string
+                  example: '로그아웃 성공'
 
   /user/mypage:
     get:
@@ -190,6 +199,13 @@ paths:
       summary: 마이페이지 조회
       security:
         - BearerAuth: []
+      parameters:
+        in: header
+        name: Authorization
+        schema:
+          type: string
+        required: true
+        description: "JWT 토큰 (형식: Bearer {토큰})"
       responses:
         '200':
           description: 마이페이지 조회 성공
@@ -235,7 +251,7 @@ paths:
           description: 사용자로부터 입력받은 인증 코드
           required: false
           type: string
-          example: '1234' # Optional if not provided initially
+          example: '1234'
       responses:
         '200':
           description: 임시 비밀번호 전송 성공
@@ -260,6 +276,12 @@ paths:
       security:
         - BearerAuth: []
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+          type: string
+          required: true
+          description: "JWT 토큰 (형식: Bearer {토큰})"
         - name: password
           in: formData
           description: 새로운 비밀번호
@@ -301,6 +323,13 @@ paths:
       summary: 회원탈퇴
       security:
         - BearerAuth: []
+      parameters:
+        in: header
+        name: Authorization
+        schema:
+          type: string
+        required: true
+        description: "JWT 토큰 (형식: Bearer {토큰})"
       responses:
         '200':
           description: 회원탈퇴 성공
