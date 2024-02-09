@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
+import{status} from "../../config/response.status.js"
+import { BaseError } from "../../config/error.js";
 
 export const isAuth = (req, res, next) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
-    const error = new Error("권한 없음");
-    error.statusCode = 401;
-    throw error;
+    throw new BaseError(status.UNAUTHORIZED);
   }
   const token = req.get("Authorization").split(" ")[1];
   let decodedToken;
@@ -16,9 +16,7 @@ export const isAuth = (req, res, next) => {
     throw err;
   }
   if (!decodedToken) {
-    const error = new Error("권한 없음");
-    error.statusCode = 401;
-    throw error;
+    throw new BaseError(status.UNAUTHORIZED);
   }
   req.userId = decodedToken.userId;
   next();

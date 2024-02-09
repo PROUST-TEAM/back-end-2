@@ -1,6 +1,6 @@
 import express from "express";
 import { isAuth } from "../middlewares/jwt.js";
-import { Login, logout, Signup, UserDelete, myPage, InfoEdit,findPW, sendAuthCode } from "../controllers/auth.js";
+import { Login, logout, Signup, UserDelete, myPage, InfoEdit,findPW, sendAuthCode } from "../controllers/auth.controller.js";
 import asyncHandler from 'express-async-handler';
 import passport from "passport";
 import{SocialKakao} from "../passport/kakaoStrategy.js";
