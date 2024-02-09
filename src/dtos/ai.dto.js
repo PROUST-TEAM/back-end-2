@@ -1,5 +1,5 @@
-// 향수 검색 결과
-export const perfumeSearchResultResponseDTO = (result) => {
+// 향수 + 카테고리 DTO
+export const perfumeResultResponseDTO = (result) => {
     const perfumes = result.perfumes;
     const categories = result.categories;
     // console.log("dto1:", perfumes, categories);
@@ -15,7 +15,7 @@ export const perfumeSearchResultResponseDTO = (result) => {
         );
 
         perfume_contents.push({
-            perfumeID : perfume.PerfumeID,
+            perfumeID: perfume.PerfumeID,
             name: perfume.Name,
             nameKor: perfume.NameKor,
             description: perfume.Description,
