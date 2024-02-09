@@ -1,5 +1,6 @@
 import { pool } from "../../config/db.config.js";
-
+import { BaseError } from "../../config/error.js";
+import { status } from "../../config/response.status.js";
 export class User {
   static async findById(id) {
     const query = "SELECT * FROM user WHERE id = ?";
@@ -8,8 +9,7 @@ export class User {
       const [rows, fields] = await pool.query(query, [id]);
       return rows[0];
     } catch (error) {
-      console.error("Error finding user by id:", error);
-      throw new Error("사용자 조회 중 오류가 발생했습니다.");
+      throw new BaseError(status.PARAMETER_IS_WRONG);
     }
   }
 
@@ -20,8 +20,7 @@ export class User {
       const [result] = await pool.query(query, [id]);
       return result.affectedRows > 0;
     } catch (error) {
-      console.error("Error deleting user by id:", error);
-      throw new Error("사용자 삭제 중 오류가 발생했습니다.");
+       throw new BaseError(status.PARAMETER_IS_WRONG);
     }
   }
 
@@ -32,8 +31,7 @@ export class User {
       const [result] = await pool.query(query, [ID, UserName, Password, UserAgree]);
       return result;
     } catch (error) {
-      console.error("저장 중에 오류가 발생하였습니다", error);
-      throw new Error("사용자 등록 중에 에러가 발생하였습니다");
+       throw new BaseError(status.PARAMETER_IS_WRONG);
     }
   }
   static async getMyInfo(id){
@@ -42,18 +40,17 @@ export class User {
       const [rows, fields] = await pool.query(query, [id]);
       return rows[0];
     } catch (error) {
-      console.error("Error finding user by email:", error);
-      throw new Error("사용자 조회 중 오류가 발생했습니다.");
-    }
+      throw new BaseError(status.PARAMETER_IS_WRONG);
   }
+}
+
   static async updateUser(id, UserName, Password){
     const query = "UPDATE user SET UserName = ?, Password = ? WHERE ID = ?";
     try {
       const [result] = await pool.query(query, [UserName, Password, id]);
       return result;
     } catch (error) {
-      console.error("저장 중에 오류가 발생하였습니다", error);
-      throw new Error("사용자 수정 중에 에러가 발생하였습니다");
+      throw new BaseError(status.PARAMETER_IS_WRONG);
     }
   }
   
@@ -63,8 +60,7 @@ static async UpdatePass (id,tempPassword){
     const [result] = await pool.query(query, [tempPassword, id]);
     return result;
 } catch (error) {
-    console.error("비밀번호 업데이트 중에 오류가 발생하였습니다", error);
-    throw new Error("비밀번호 업데이트 중에 에러가 발생하였습니다");
+     throw new BaseError(status.PARAMETER_IS_WRONG);
 }
 }
 
@@ -76,10 +72,9 @@ static async addSocialUser(SNSAccountType, SNSAccountID, UserName, password){
       const selectQuery = "SELECT * FROM user WHERE ID = ?";
       const [rows] = await pool.query(selectQuery, [SNSAccountID]);
 
-      return rows[0];  // 새로 생성된 사용자의 정보를 반환
+      return rows[0];  
   } catch (error) {
-      console.error("저장 중에 오류가 발생하였습니다", error);
-      throw new Error("사용자 등록 중에 에러가 발생하였습니다");
+       throw new BaseError(status.PARAMETER_IS_WRONG);
   }
 }
 
@@ -90,8 +85,7 @@ static async findBySocialId(id) {
       const [rows, fields] = await pool.query(query, [id]);
       return rows[0];
     } catch (error) {
-      console.error("Error finding user by id:", error);
-      throw new Error("사용자 조회 중 오류가 발생했습니다.");
+       throw new BaseError(status.PARAMETER_IS_WRONG);
     }
   }
 

@@ -47,10 +47,7 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message, data: data });
 });
 
-app.use((req, res, next) => {
-  console.log(req.cookies.token);  // 콘솔에 토큰 값 출력
-  next();
-});
+
 app.get("/", (req, res) => {
   console.log("/");
   res.send("Add url '/api-docs' to test Swagger!");
