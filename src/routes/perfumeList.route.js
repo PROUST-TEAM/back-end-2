@@ -6,4 +6,4 @@ import { isAuth } from "../middlewares/jwt.js";
 
 export const perfumeListRouter = express.Router({ mergeParams: true });
 
-perfumeListRouter.get("/:UserID", isAuth, asyncHandler(perfumeList));
+perfumeListRouter.get("/", isAuth, asyncHandler(perfumeList));

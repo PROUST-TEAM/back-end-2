@@ -30,5 +30,5 @@ export const perfumeList = async (req, res, next) => {
 
   console.log(Keyword);
 
-  return res.send(response(status.SUCCESS, await perfumeListContent(req.params.UserID, Keyword)));
+  return res.send(response(status.SUCCESS, await perfumeListContent(req.userId, Keyword)));
 };

@@ -8,19 +8,19 @@ export const getcategoryId = "SELECT c.Keyword " + "FROM PerfumeCategory pc " + 
 
 // 향수 찜 정보 조회
 
-export const getlikeId = "SELECT up.Status " + "FROM userperfume up " + "JOIN Perfume p ON up.PerfumeID = p.PerfumeID " + "JOIN User u ON up.ID = u.ID " + "WHERE p.Name = ? AND u.ID = ?;";
+export const getlikeId = "SELECT up.Status " + "FROM userperfume up " + "JOIN Perfume p ON up.PerfumeID = p.PerfumeID " + "JOIN User u ON up.UserID = u.UserID " + "WHERE p.Name = ? AND u.ID = ?;";
 
 // 향수 코멘트 작성
 
-export const confirmComment = "SELECT EXISTS(SELECT 1 FROM comment WHERE ID = ? and Content = ?) as isExistComment;";
+export const confirmComment = "SELECT EXISTS(SELECT 1 FROM comment WHERE UserID = (SELECT UserID FROM User WHERE ID = ?) and Content = ?) as isExistComment;";
 
-export const insertperfumeWriteSql = "INSERT INTO comment (ID, Content, PerfumeID) SELECT ?, ?, PerfumeID FROM Perfume WHERE Name = ?";
+export const insertperfumeWriteSql = "INSERT INTO comment (UserID, Content, PerfumeID) SELECT (SELECT UserID FROM User WHERE ID = ?), ?, PerfumeID FROM Perfume WHERE Name = ?";
 
 export const getperfumeWriteID = "SELECT * FROM comment WHERE CommentID = ?;";
 
 // 향수 코멘트 삭제
 
-export const insertperfumeDeleteSql = "DELETE FROM comment WHERE PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?) AND ID = ? AND Content = ?";
+export const insertperfumeDeleteSql = "DELETE FROM comment WHERE PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?) AND UserID = (SELECT UserID FROM User WHERE ID = ?) AND Content = ?";
 
 // 향수 코멘트 조회 (로그인 유저)
 
@@ -31,13 +31,13 @@ export const getCommentUserId = "SELECT cm.Content " + "FROM comment cm JOIN per
 export const getCommentId = "SELECT cm.Content " + "FROM comment cm JOIN perfume p ON cm.PerfumeID = p.PerfumeID " + "WHERE p.Name = ?" + "ORDER BY cm.Created_At DESC LIMIT 3 ;";
 
 // 찜 상태 조회
-export const getPerfumeLikeStatusSql = "SELECT up.Status FROM userperfume up WHERE up.ID = ? and up.PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?);";
+export const getPerfumeLikeStatusSql = "SELECT up.Status FROM userperfume up WHERE up.UserID = (SELECT UserID FROM User WHERE ID = ?) and up.PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?);";
 
 // 찜 생성
-export const insertPerfumeLikeSql = "INSERT INTO userperfume (ID, Status, PerfumeID) SELECT ?, ?, PerfumeID FROM Perfume WHERE Name = ?;";
+export const insertPerfumeLikeSql = "INSERT INTO userperfume (UserID, Status, PerfumeID) SELECT (SELECT UserID FROM User WHERE ID = ?), ?, PerfumeID FROM Perfume WHERE Name = ?;";
 
 // 찜 상태 업데이트
-export const updatePerfumeLikeSql = "UPDATE userperfume SET Status = ? WHERE ID = ? and PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?);";
+export const updatePerfumeLikeSql = "UPDATE userperfume SET Status = ? WHERE UserID = (SELECT UserID FROM User WHERE ID = ?) and PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?);";
 
 // 취'향'목록 조회
 

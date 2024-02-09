@@ -3,7 +3,7 @@ paths:
     get:
       tags:
         - Perfume
-      summary: 향수 상세 정보 조회 로직
+      summary: 향수 상세 정보 조회
       parameters:
         - name: Name
           in: path
@@ -71,7 +71,7 @@ paths:
     get:
       tags:
         - Perfume
-      summary: 향수 카테고리 정보 조회 로직
+      summary: 향수 카테고리 정보 조회
       parameters:
         - name: Name
           in: path
@@ -139,7 +139,7 @@ paths:
     get:
       tags:
         - Perfume
-      summary: 향수 찜 정보 조회 로직
+      summary: 향수 찜 정보 조회
       security:
         - BearerAuth: []
       parameters:
@@ -245,7 +245,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "write success!"
               data:
                 type: object
                 example: { "UserID": 1, "Name": "for Her", "Content": "perfume content" }
@@ -322,7 +322,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "delete success!"
               data:
                 type: object
 
@@ -392,7 +392,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "readUser success!"
               data:
                 type: object
 
@@ -460,7 +460,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "read success!"
               data:
                 type: object
 
@@ -530,7 +530,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "like success!"
               data:
                 type: object
 

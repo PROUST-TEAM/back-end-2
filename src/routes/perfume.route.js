@@ -8,7 +8,7 @@ export const perfumeRouter = express.Router({ mergeParams: true });
 
 perfumeRouter.get("/getPerfumes", asyncHandler(perfumePreview));
 perfumeRouter.get("/getCategories", asyncHandler(categoryPreview));
-perfumeRouter.get("/getLikes", asyncHandler(likePreview));
+perfumeRouter.get("/getLikes", isAuth, asyncHandler(likePreview));
 perfumeRouter.post("/write", isAuth, asyncHandler(perfumeWrite));
 perfumeRouter.delete("/delete/:Content", isAuth, asyncHandler(perfumeDelete));
 perfumeRouter.get("/readUser", asyncHandler(perfumeReadUser));
