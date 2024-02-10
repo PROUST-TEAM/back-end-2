@@ -3,7 +3,7 @@ paths:
     get:
       tags:
         - Perfume
-      summary: 향수 상세 정보 조회 로직
+      summary: 향수 상세 정보 조회
       parameters:
         - name: Name
           in: path
@@ -71,7 +71,7 @@ paths:
     get:
       tags:
         - Perfume
-      summary: 향수 카테고리 정보 조회 로직
+      summary: 향수 카테고리 정보 조회
       parameters:
         - name: Name
           in: path
@@ -135,11 +135,11 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{Name}/getLikes/{UserID}:
+  /{Name}/getLikes:
     get:
       tags:
         - Perfume
-      summary: 향수 찜 정보 조회 로직
+      summary: 향수 찜 정보 조회
       security:
         - BearerAuth: []
       parameters:
@@ -148,12 +148,6 @@ paths:
           schema:
             type: string
           required: true
-        - name: UserID
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 찜 정보를 조회하려는 사용자의 ID
       responses:
         "200":
           description: 향수 찜 정보 조회 성공
@@ -211,7 +205,7 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{Name}/write/{UserID}:
+  /{Name}/write:
     post:
       tags:
         - Perfume
@@ -225,12 +219,6 @@ paths:
           schema:
             type: string
           description: 작성하려는 향수의 이름
-        - name: UserID
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 작성하려는 사용자의 ID
         - name: Comment
           in: body
           required: true
@@ -257,7 +245,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "write success!"
               data:
                 type: object
                 example: { "UserID": 1, "Name": "for Her", "Content": "perfume content" }
@@ -297,7 +285,7 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{Name}/delete/{UserID}/{Content}:
+  /{Name}/delete/{Content}:
     delete:
       tags:
         - Perfume
@@ -311,12 +299,6 @@ paths:
           schema:
             type: string
           description: 삭제하려는 후기의 향수의 이름
-        - name: UserID
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 삭제하려는 후기의 사용자의 번호
         - name: Content
           in: path
           required: true
@@ -340,7 +322,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "delete success!"
               data:
                 type: object
 
@@ -410,7 +392,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "readUser success!"
               data:
                 type: object
 
@@ -478,7 +460,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "read success!"
               data:
                 type: object
 
@@ -517,7 +499,7 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /{Name}/likePerfumes/{UserID}:
+  /{Name}/likePerfumes:
     patch:
       tags:
         - Perfume
@@ -531,12 +513,6 @@ paths:
           schema:
             type: string
           description: 찜하려는 향수의 이름
-        - name: UserID
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 찜하는 사용자의 번호
       responses:
         "200":
           description: 향수 찜하기 성공!
@@ -554,7 +530,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: "success!"
+                example: "like success!"
               data:
                 type: object
 
@@ -593,7 +569,7 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /perfumeList/{UserID}:
+  /perfumeList:
     get:
       tags:
         - PerfumeList
@@ -601,12 +577,6 @@ paths:
       security:
         - BearerAuth: []
       parameters:
-        - name: UserID
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 취'향'목록 조회 사용자의 번호
         - name: Keyword
           in: query
           description: 향수의 카테고리

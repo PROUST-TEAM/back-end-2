@@ -22,27 +22,27 @@ export const likePreview = async (req, res, next) => {
   console.log("향수 찜 정보 조회를 요청하였습니다!");
   //   console.log(req.params.PerfumeID);
 
-  return res.send(response(status.SUCCESS, await likeContent(req.params.Name, req.params.UserID)));
+  return res.send(response(status.SUCCESS, await likeContent(req.params.Name, req.userId)));
 };
 
 export const perfumeWrite = async (req, res, next) => {
   console.log("향수 코멘트 작성을 요청하였습니다!");
 
-  // console.log(req.params.PerfumeID);
-  // console.log(req.params.UserID);
+  // console.log(req.PerfumeID);
+  // console.log(req.userId);
   // console.log("body:", req.body); // 값이 잘 들어오나 찍어보기 위한 테스트용
 
-  res.send(response(status.SUCCESS, await joinperfumeWrite(req.params.Name, req.params.UserID, req.body)));
+  res.send(response(status.SUCCESS, await joinperfumeWrite(req.params.Name, req.userId, req.body)));
 };
 
 export const perfumeDelete = async (req, res, next) => {
   console.log("향수 코멘트 삭제를 요청하였습니다!");
 
-  // console.log(req.params.PerfumeID);
-  // console.log(req.params.UserID);
-  // console.log(req.params.Content);
+  // console.log(req.PerfumeID);
+  // console.log(req.userId);
+  // console.log(req.Content);
 
-  res.send(response(status.SUCCESS, await joinperfumeDelete(req.params.Name, req.params.UserID, req.params.Content)));
+  res.send(response(status.SUCCESS, await joinperfumeDelete(req.params.Name, req.userId, req.params.Content)));
 };
 
 export const perfumeReadUser = async (req, res, next) => {
@@ -65,7 +65,7 @@ export const perfumeLike = async (req, res, next) => {
   console.log("향수 찜하기 요청하였습니다!");
 
   // console.log(req.params.PerfumeID);
-  // console.log(req.params.UserID);
+  // console.log(req.params.userId);
 
-  return res.send(response(status.SUCCESS, await perfumeLikeContent(req.params.Name, req.params.UserID)));
+  return res.send(response(status.SUCCESS, await perfumeLikeContent(req.params.Name, req.userId)));
 };

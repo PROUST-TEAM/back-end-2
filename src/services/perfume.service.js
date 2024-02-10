@@ -5,7 +5,6 @@ import { status } from "../../config/response.status.js";
 import { addperfumeWriteResponseDTO } from "../dtos/perfume.dto.js";
 import { addperfumeWrite, getperfumeWrite, addperfumeDelete, changeperfumeLike } from "../models/perfume.dao.js";
 
-// 향수 코멘트 작성
 export const joinperfumeWrite = async (Name, UserID, body) => {
   // console.log(PerfumeID, UserID);
 
