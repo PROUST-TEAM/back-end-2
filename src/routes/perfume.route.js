@@ -8,10 +8,10 @@ export const perfumeRouter = express.Router({ mergeParams: true });
 
 perfumeRouter.get("/getPerfumes", asyncHandler(perfumePreview));
 perfumeRouter.get("/getCategories", asyncHandler(categoryPreview));
-perfumeRouter.get("/getLikes/:UserID", asyncHandler(likePreview));
-perfumeRouter.post("/write/:UserID", isAuth, asyncHandler(perfumeWrite));
-perfumeRouter.delete("/delete/:UserID/:Content", isAuth, asyncHandler(perfumeDelete));
+perfumeRouter.get("/getLikes", isAuth, asyncHandler(likePreview));
+perfumeRouter.post("/write", isAuth, asyncHandler(perfumeWrite));
+perfumeRouter.delete("/delete/:Content", isAuth, asyncHandler(perfumeDelete));
 perfumeRouter.get("/readUser", asyncHandler(perfumeReadUser));
 perfumeRouter.get("/read", asyncHandler(perfumeRead));
 
-perfumeRouter.patch("/likePerfumes/:UserID", isAuth, asyncHandler(perfumeLike));
+perfumeRouter.patch("/likePerfumes", isAuth, asyncHandler(perfumeLike));
