@@ -5,8 +5,33 @@ import { getUserLikes, getAllPerfumes } from "../models/ai.dao.js";
 
 export const searchPerfume = async (searchText) => {
     const result = await searchPerfumeResult(searchText);
+    console.log("reseult" + result.length);
+    if (Object.keys(result).length !== 0) {
+        return perfumeResultResponseDTO(result);
+    } else {
+        const result2 = await getAllPerfumes();
+        console.log("reseult2" + result2);
+        const allPerfumes = JSON.stringify(perfumeResultResponseDTO(result2));
+        // const like_content = likeContent();
+        // console.log(allPerfumes);
+        const openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY,
+        });
+
+        const chatCompletion = await openai.chat.completions.create({
+            messages: [
+                { role: "system", content: "취'향'을 찾아봐" },
+                {
+                    role: "user",
+                    content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 3개까지 추천해줘`,
+                },
+            ],
+            model: "gpt-4-turbo-preview",
+        });
+        // console.log(chatCompletion.choices[0].message);
+        return chatCompletion.choices[0].message;
+    }
     // console.log("searchresult", result);
-    return perfumeResultResponseDTO(result);
 };
 
 // 코사인 유사도 계산 함수
@@ -92,29 +117,4 @@ export const recommendPerfumeUser = async (userId) => {
     );
 
     return recommendedPerfumes;
-};
-
-export const recommendPerfume = async (search) => {
-    const result = await getAllPerfumes();
-    const allPerfumes = JSON.stringify(
-        perfumeResultResponseDTO(result).slice(0, 7)
-    ); // 글자수가 길어서 전체 데이터를 못보내
-    // const like_content = likeContent();
-    console.log(allPerfumes);
-    const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-    });
-
-    const chatCompletion = await openai.chat.completions.create({
-        messages: [
-            { role: "system", content: "취'향'을 찾아봐" },
-            {
-                role: "user",
-                content: `${allPerfumes} 리스트에서 ${search} 관련 향수 3개가지  추천해줘`,
-            },
-        ],
-        model: "gpt-3.5-turbo",
-    });
-    // console.log(chatCompletion.choices[0].message);
-    return chatCompletion.choices[0].message;
 };

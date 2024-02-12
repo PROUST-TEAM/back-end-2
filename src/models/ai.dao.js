@@ -22,29 +22,34 @@ export const searchPerfumeResult = async (searchText) => {
             `%${searchText}%`,
             `%${searchText}%`,
         ]);
+        console.log(perfumes);
 
-        // 각 향수에 대한 카테고리 정보도 가져옴
-        const categoryQuery = `
-            SELECT pc.PerfumeID, c.Keyword
-            FROM PerfumeCategory pc
-            LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
-            WHERE pc.PerfumeID IN (?)`;
-        const [categories] = await pool.query(categoryQuery, [
-            perfumes.map((perfume) => perfume.PerfumeID),
-        ]);
+        let result = {};
+
+        if (perfumes.length !== 0) {
+            // 각 향수에 대한 카테고리 정보도 가져옴
+            const categoryQuery = `
+                SELECT pc.PerfumeID, c.Keyword
+                FROM PerfumeCategory pc
+                LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
+                WHERE pc.PerfumeID IN (?)`;
+            const [categories] = await pool.query(categoryQuery, [
+                perfumes.map((perfume) => perfume.PerfumeID),
+            ]);
+            result = {
+                perfumes: perfumes,
+                categories: categories,
+            };
+        }
 
         conn.release();
-
-        const result = {
-            perfumes: perfumes,
-            categories: categories,
-        };
 
         console.log(result);
 
         // 향수와 카테고리 정보를 DTO에 전달하여 반환
         return result;
     } catch (err) {
+        console.log(err);
         throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 };
@@ -89,7 +94,6 @@ export const getUserLikes = async (userId) => {
             perfumes: userLikes,
             categories: categories,
         };
-        console.log("하늘일 " + result);
 
         conn.release();
 
@@ -98,6 +102,7 @@ export const getUserLikes = async (userId) => {
         throw new BaseError(status.PARAMETER_IS_WRONG);
     }
 };
+
 export const getAllPerfumes = async () => {
     try {
         const conn = await pool.getConnection();

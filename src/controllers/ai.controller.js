@@ -3,14 +3,11 @@ import { status } from "../../config/response.status.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
 
-import {
-    searchPerfume,
-    recommendPerfume,
-    recommendPerfumeUser,
-} from "../services/ai.service.js";
+import { searchPerfume, recommendPerfumeUser } from "../services/ai.service.js";
 
 export const Search = async (req, res, next) => {
     const searchText = req.body.search;
+    console.log(searchText);
     const result = await searchPerfume(searchText);
     // console.log("searchText", searchText);
     // console.log("result", result);
@@ -20,7 +17,6 @@ export const Search = async (req, res, next) => {
 };
 
 export const Recommend = async (req, res, next) => {
-    const search = req.body.search;
     const authHeader = req.headers.authorization;
     if (authHeader) {
         const token = authHeader && authHeader.split(" ")[1]; // Bearer 제거
@@ -41,7 +37,7 @@ export const Recommend = async (req, res, next) => {
             )
         );
     } else {
-        const result = await recommendPerfume(search);
+        const result = "회원가입 하고 향수 추천 받아봐!";
         res.status(200).json(
             response(
                 {

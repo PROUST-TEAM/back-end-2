@@ -2,7 +2,7 @@
 export const perfumeResultResponseDTO = (result) => {
     const perfumes = result.perfumes;
     const categories = result.categories;
-    // console.log("dto1:", perfumes, categories);
+    console.log("dto1:", perfumes, categories);
     const perfume_contents = [];
 
     for (let i = 0; i < perfumes.length; i++) {
