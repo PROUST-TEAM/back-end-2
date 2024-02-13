@@ -10,7 +10,7 @@ export const searchPerfume = async (searchText) => {
         return perfumeResultResponseDTO(result);
     } else {
         const result2 = await getAllPerfumes();
-        console.log("reseult2" + result2);
+        // console.log("reseult2" + result2);
         const allPerfumes = JSON.stringify(perfumeResultResponseDTO(result2));
         // const like_content = likeContent();
         // console.log(allPerfumes);
@@ -23,13 +23,31 @@ export const searchPerfume = async (searchText) => {
                 { role: "system", content: "취'향'을 찾아봐" },
                 {
                     role: "user",
-                    content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 3개까지 추천해줘`,
+                    content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 3개까지 추천해주고 리스트의 DTO 객체 형태로만 반환해줘`,
                 },
             ],
             model: "gpt-4-turbo-preview",
+            temperature: 0.5, // 낮은 값으로 설정하여 일관된 결과를 얻을 수 있습니다.
+            seed: 12345, // 임의의 값으로 설정하여 결과의 재현성을 보장합니다.
         });
-        // console.log(chatCompletion.choices[0].message);
-        return chatCompletion.choices[0].message;
+
+        const aiResult = chatCompletion.choices[0].message.content;
+        console.log("result" + aiResult);
+
+        // JSON 형식의 문자열 추출
+        // const jsonStartIndex = aiResult.indexOf("```json") + 6; // '```json' 다음 문자부터 시작
+        // const jsonEndIndex = aiResult.lastIndexOf("```"); // 마지막 '```' 위치까지
+        // const jsonString = aiResult.substring(jsonStartIndex, jsonEndIndex);
+        // console.log(jsonString);
+
+        // "```json"과 "```" 사이의 문자열 추출
+        var jsonText = aiResult.match(/```json([\s\S]*)```/)[1];
+        console.log(jsonText);
+
+        // JSON 문자열을 파싱하여 객체 배열로 변환
+        const perfumeArray = JSON.parse(jsonText);
+
+        return perfumeArray;
     }
     // console.log("searchresult", result);
 };
