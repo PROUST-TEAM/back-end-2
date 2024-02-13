@@ -1,7 +1,6 @@
 // ./webpack.config.js
 const nodeExternals = require("webpack-node-externals");
 const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
     mode: "development",
     context: __dirname + '/src',
@@ -12,11 +11,7 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "main.js",
     },
-    plugins: [
-        new CopyPlugin({
-            patterns: [{ from: "./swagger", to: "./swagger" }],
-        }),
-    ],
+    
     module: {
         rules: [
         {
