@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import { UserRoutes } from "./src/routes/user.route.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
 import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
+import {healthRoute} from "./src/routes/health.route.js";
 import { BaseError } from "./config/error.js";
 import { status } from "./config/response.status.js";
 import { specs } from "./config/swagger.config.js";
@@ -53,7 +54,7 @@ app.get("/", (req, res) => {
   res.send("Add url '/api-docs' to test Swagger!");
 });
 
-// app.use("/temp", tempRouter);
+app.use('/health',healthRoute);
 app.use("/user", UserRoutes);
 app.use("/:Name", perfumeRouter);
 app.use("/perfumeList", perfumeListRouter);
