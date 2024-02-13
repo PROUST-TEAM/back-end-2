@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import { UserRoutes } from "./src/routes/user.route.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
 import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
+import { AIRoutes } from "./src/routes/ai.route.js";
 import { BaseError } from "./config/error.js";
 import { status } from "./config/response.status.js";
 import { specs } from "./config/swagger.config.js";
@@ -40,36 +41,39 @@ app.use(cookieParser());
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 app.use((error, req, res, next) => {
-  console.log(error);
-  const status = error.statusCode || 500;
-  const message = error.message;
-  const data = error.data;
-  res.status(status).json({ message: message, data: data });
+    console.log(error);
+    const status = error.statusCode || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({ message: message, data: data });
 });
 
 
 app.get("/", (req, res) => {
-  console.log("/");
-  res.send("Add url '/api-docs' to test Swagger!");
+    console.log("/");
+    res.send("Add url '/api-docs' to test Swagger!");
 });
 
 // app.use("/temp", tempRouter);
 app.use("/user", UserRoutes);
 app.use("/:Name", perfumeRouter);
 app.use("/perfumeList", perfumeListRouter);
+app.use("/ai", AIRoutes);
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  // res.status(500).send(err.stack);
-  // 템플릿 엔진 변수 설정
-  res.locals.message = err.message;
-  // 개발환경이면 에러를 출력하고 아니면 출력하지 않기
-  res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
-  console.error("Error data:", err.data);
-  // res.status(err.data.status).send(response(err.data));
-  res.status(err.status || 500).send(response(err.data || { message: "Internal Server Error" }));
+    console.error(err.stack);
+    // res.status(500).send(err.stack);
+    // 템플릿 엔진 변수 설정
+    res.locals.message = err.message;
+    // 개발환경이면 에러를 출력하고 아니면 출력하지 않기
+    res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
+    console.error("Error data:", err.data);
+    // res.status(err.data.status).send(response(err.data));
+    res.status(err.status || 500).send(
+        response(err.data || { message: "Internal Server Error" })
+    );
 });
 
 app.listen(app.get("port"), () => {
-  console.log(`Example app listening on port ${app.get("port")}`);
+    console.log(`Example app listening on port ${app.get("port")}`);
 });
