@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import path from "path";
+// import path from "path";
 import bodyParser from "body-parser";
 import { response } from "./config/response.js";
 import cookieParser from "cookie-parser";
