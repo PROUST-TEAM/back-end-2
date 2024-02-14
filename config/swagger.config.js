@@ -7,15 +7,13 @@ const options = {
       version: "1.0.0",
       description: "PROUST API with express, API 설명",
     },
-    components: {
-      securityDefinitions: {
-        // 보안 정의 추가
-        BearerAuth: {
-          type: "apiKey",
-          name: "Authorization",
-          scheme: "bearer",
-          in: "header",
-        },
+    securityDefinitions: {
+      // 보안 정의 추가
+      BearerAuth: {
+        type: "apiKey",
+        name: "Authorization",
+        scheme: "bearer",
+        in: "header",
       },
     },
     servers: [
