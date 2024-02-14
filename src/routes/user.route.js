@@ -1,7 +1,7 @@
 import express from "express";
 import { isAuth } from "../middlewares/jwt.js";
-import { Login, logout, UserDelete, myPage, InfoEdit } from "../controllers/auth.controller.js";
-// , Signup, findPW, sendAuthCode
+import { Login, logout, UserDelete, myPage, InfoEdit, Signup, findPW, sendAuthCode } from "../controllers/auth.controller.js";
+//
 import asyncHandler from "express-async-handler";
 // import passport from "passport";
 // import { SocialKakao } from "../passport/kakaoStrategy.js";
@@ -15,14 +15,14 @@ export const UserRoutes = express.Router();
 // SocialNaver();
 
 UserRoutes.post("/login", asyncHandler(Login));
-// UserRoutes.post("/signup/request", asyncHandler(sendAuthCode));
-// UserRoutes.post("/signup/confirm", asyncHandler(Signup));
+UserRoutes.post("/signup/request", asyncHandler(sendAuthCode));
+UserRoutes.post("/signup/confirm", asyncHandler(Signup));
 UserRoutes.post("/logout", isAuth, asyncHandler(logout));
 UserRoutes.delete("/delete", isAuth, asyncHandler(UserDelete));
 UserRoutes.get("/mypage", isAuth, asyncHandler(myPage));
 UserRoutes.post("/edit", isAuth, asyncHandler(InfoEdit));
-// UserRoutes.post("/findPW/request", asyncHandler(sendAuthCode));
-// UserRoutes.post("/findPW/confirm", asyncHandler(findPW));
+UserRoutes.post("/findPW/request", asyncHandler(sendAuthCode));
+UserRoutes.post("/findPW/confirm", asyncHandler(findPW));
 
 // UserRoutes.get("/kakao", passport.authenticate("kakao", { session: false }));
 // UserRoutes.get("/kakao/callback", passport.authenticate("kakao", { session: false, failureRedirect: "/" }), (req, res) => {
