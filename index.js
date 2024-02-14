@@ -55,7 +55,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/health',healthRoute);
-app.use("/user", UserRoutes);
+//app.use("/user", UserRoutes);
 //app.use("/:Name", perfumeRouter);
 //app.use("/perfumeList", perfumeListRouter);
 
