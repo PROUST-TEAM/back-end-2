@@ -42,7 +42,7 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "public")));
 
 // swagger
-app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
+// app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 app.use((error, req, res, next) => {
   console.log(error);
@@ -52,16 +52,16 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message, data: data });
 });
 
-app.get("/", (req, res) => {
-  console.log("/");
-  res.send("Add url '/api-docs' to test Swagger!");
-});
+// app.get("/", (req, res) => {
+//   console.log("/");
+//   res.send("Add url '/api-docs' to test Swagger!");
+// });
 
 // app.use("/temp", tempRouter);
-app.use("/user", UserRoutes);
-app.use("/:Name", perfumeRouter);
-app.use("/perfumeList", perfumeListRouter);
-app.use("/ai", AIRoutes);
+// app.use("/user", UserRoutes);
+// app.use("/:Name", perfumeRouter);
+// app.use("/perfumeList", perfumeListRouter);
+// app.use("/ai", AIRoutes);
 
 app.use("/health", healthRoute);
 
