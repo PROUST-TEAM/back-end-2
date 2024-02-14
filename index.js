@@ -4,7 +4,6 @@ import cors from "cors";
 // import path from "path";
 import bodyParser from "body-parser";
 import { response } from "./config/response.js";
-import cookieParser from "cookie-parser";
 import { UserRoutes } from "./src/routes/user.route.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
 import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
