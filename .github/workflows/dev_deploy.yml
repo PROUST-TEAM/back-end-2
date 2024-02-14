@@ -47,9 +47,10 @@ jobs:
           cp package.json dist/package.json
           cp package-lock.json dist/package-lock.json
           cp Procfile dist/Procfile
-          cp swagger.config.js config/swagger.config.js
-          cp swagger
           cd dist
+          mkdir config
+          cp ../config/swagger.config.js ./config/swagger.config.js
+          cp swagger
           zip -r deploy.zip .
 
       # 생성한 deploy.zip 파일 내부 확인용!
