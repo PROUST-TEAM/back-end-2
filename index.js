@@ -5,7 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { response } from "./config/response.js";
 import cookieParser from 'cookie-parser';
-//import { UserRoutes } from "./src/routes/user.route.js";
+import { UserRoutes } from "./src/routes/user.route.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
 import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
 import {healthRoute} from "./src/routes/health.route.js";
@@ -55,9 +55,9 @@ app.get("/", (req, res) => {
 });
 
 app.use('/health',healthRoute);
-//app.use("/user", UserRoutes);
-//app.use("/:Name", perfumeRouter);
-//app.use("/perfumeList", perfumeListRouter);
+app.use("/user", UserRoutes);
+app.use("/:Name", perfumeRouter);
+app.use("/perfumeList", perfumeListRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
