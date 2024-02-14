@@ -5,15 +5,15 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { response } from "./config/response.js";
 import cookieParser from "cookie-parser";
-import { UserRoutes } from "./src/routes/user.route.js";
-import { perfumeRouter } from "./src/routes/perfume.route.js";
-import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
-import { AIRoutes } from "./src/routes/ai.route.js";
-import { BaseError } from "./config/error.js";
-import { status } from "./config/response.status.js";
-import { specs } from "./config/swagger.config.js";
-import SwaggerUi from "swagger-ui-express";
-import session from "express-session";
+// import { UserRoutes } from "./src/routes/user.route.js";
+// import { perfumeRouter } from "./src/routes/perfume.route.js";
+// import { perfumeListRouter } from "./src/routes/perfumeList.route.js";
+// import { AIRoutes } from "./src/routes/ai.route.js";
+// import { BaseError } from "./config/error.js";
+// import { status } from "./config/response.status.js";
+// import { specs } from "./config/swagger.config.js";
+// import SwaggerUi from "swagger-ui-express";
+// import session from "express-session";
 
 import { healthRoute } from "./src/routes/health.route.js";
 
@@ -28,14 +28,14 @@ app.use(express.json()); // request의 본문을 json으로 해석할 수 있도
 app.use(express.urlencoded({ extended: false })); // 단순 객체 문자열 형태로 본문 데이터 해석
 app.use(express.static("uploads")); // 'uploads'는 이미지 파일이 저장된 디렉토리 경로
 
-app.use(
-  session({
-    secret: "your_secret_key",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 5 * 60 * 1000 }, // 세션 만료 시간을 5분으로 설정
-  })
-);
+// app.use(
+//   session({
+//     secret: "your_secret_key",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { maxAge: 5 * 60 * 1000 }, // 세션 만료 시간을 5분으로 설정
+//   })
+// );
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
