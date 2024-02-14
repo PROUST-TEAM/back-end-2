@@ -20,7 +20,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://dev.proust.store",
+        url: "https://dev.proust.store",
         description: "API 서버",
       },
       {
