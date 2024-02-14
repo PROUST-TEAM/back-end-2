@@ -50,7 +50,9 @@ jobs:
           cd dist
           mkdir config
           cp ../config/swagger.config.js ./config/swagger.config.js
-          cp swagger
+          cp ../swagger/ai.swagger.yaml ./ai.swagger.yaml
+          cp ../swagger/perfume.swagger.yaml ./perfume.swagger.yaml
+          cp ../swagger/user.swagger.yaml ./user.swagger.yaml
           zip -r deploy.zip .
 
       # 생성한 deploy.zip 파일 내부 확인용!
