@@ -55,9 +55,9 @@ app.get("/", (req, res) => {
 });
 
 app.use('/health',healthRoute);
-//app.use("/user", UserRoutes);
-app.use("/:Name", perfumeRouter);
-app.use("/perfumeList", perfumeListRouter);
+app.use("/user", UserRoutes);
+//app.use("/:Name", perfumeRouter);
+//app.use("/perfumeList", perfumeListRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
