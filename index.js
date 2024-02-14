@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 // import path from "path";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import { response } from "./config/response.js";
 import { UserRoutes } from "./src/routes/user.route.js";
 import { perfumeRouter } from "./src/routes/perfume.route.js";
