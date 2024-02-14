@@ -2,16 +2,16 @@ import express from "express";
 import { isAuth } from "../middlewares/jwt.js";
 import { Login, logout, Signup, UserDelete, myPage, InfoEdit, findPW, sendAuthCode } from "../controllers/auth.controller.js";
 import asyncHandler from "express-async-handler";
-import passport from "passport";
-import { SocialKakao } from "../passport/kakaoStrategy.js";
-import { SocialGoogle } from "../passport/googleStrategy.js";
-import { SocialNaver } from "../passport/naverStrategy.js";
-import { response } from "../../config/response.js";
+// import passport from "passport";
+// import { SocialKakao } from "../passport/kakaoStrategy.js";
+// import { SocialGoogle } from "../passport/googleStrategy.js";
+// import { SocialNaver } from "../passport/naverStrategy.js";
+// import { response } from "../../config/response.js";
 export const UserRoutes = express.Router();
 
-SocialKakao();
-SocialGoogle();
-SocialNaver();
+// SocialKakao();
+// SocialGoogle();
+// SocialNaver();
 
 UserRoutes.post("/login", asyncHandler(Login));
 UserRoutes.post("/signup/request", asyncHandler(sendAuthCode));
