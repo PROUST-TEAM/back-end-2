@@ -11,7 +11,7 @@
     "start": "node main.js",
     "build": "webpack --mode production"
   },
-  "author": "proust",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.7",
