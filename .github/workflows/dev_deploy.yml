@@ -70,6 +70,19 @@ jobs:
       # Beanstalk 배포
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v21
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_TABLE: ${{ secrets.DB_TABLE }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+          KAKAO_ID: ${{ secrets.KAKAO_ID }}
+          GOOGLE_ID: ${{ secrets.GOOGLE_ID }}
+          GOOGLE_SECRET: ${{ secrets.GOOGLE_SECRET }}
+          NAVER_ID: ${{ secrets.NAVER_ID }}
+          NAVER_SECRET: ${{ secrets.NAVER_SECRET }}
         with:
           aws_access_key: ${{secrets.AWS_ACTION_ACCESS_KEY_ID_2}}
           aws_secret_key: ${{secrets.AWS_ACTION_SECRET_ACCESS_KEY_2}}

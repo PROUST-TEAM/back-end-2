@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import{status} from "../../config/response.status.js"
+import { status } from "../../config/response.status.js";
 import { BaseError } from "../../config/error.js";
 
 export const isAuth = (req, res, next) => {
@@ -21,6 +21,3 @@ export const isAuth = (req, res, next) => {
   req.userId = decodedToken.userId;
   next();
 };
-
-
-
