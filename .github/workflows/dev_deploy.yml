@@ -49,10 +49,11 @@ jobs:
           cp Procfile dist/Procfile
           cd dist
           mkdir config
+          mkdir swagger
           cp ../config/swagger.config.js ./config/swagger.config.js
-          cp ../swagger/ai.swagger.yaml ./ai.swagger.yaml
-          cp ../swagger/perfume.swagger.yaml ./perfume.swagger.yaml
-          cp ../swagger/user.swagger.yaml ./user.swagger.yaml
+          cp ../swagger/ai.swagger.yaml ./swagger/ai.swagger.yaml
+          cp ../swagger/perfume.swagger.yaml ./swagger/perfume.swagger.yaml
+          cp ../swagger/user.swagger.yaml ./swagger/user.swagger.yaml
           zip -r deploy.zip .
 
       # 생성한 deploy.zip 파일 내부 확인용!
