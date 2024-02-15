@@ -22,7 +22,7 @@ export const searchPerfumeResult = async (searchText) => {
             `%${searchText}%`,
             `%${searchText}%`,
         ]);
-        console.log(perfumes);
+        // console.log(perfumes);
 
         let result = {};
 
@@ -44,7 +44,7 @@ export const searchPerfumeResult = async (searchText) => {
 
         conn.release();
 
-        console.log(result);
+        // console.log(result);
 
         // 향수와 카테고리 정보를 DTO에 전달하여 반환
         return result;
@@ -64,7 +64,7 @@ export const getUserLikes = async (userId) => {
         SELECT Perfume.*
         FROM Perfume
         INNER JOIN UserPerfume ON Perfume.PerfumeID = UserPerfume.PerfumeID
-        WHERE UserPerfume.UserID = ?
+        WHERE UserPerfume.UserID = ? AND UserPerfume.Status = 'A'
     `;
 
         // const query = `
@@ -77,23 +77,28 @@ export const getUserLikes = async (userId) => {
         // `;
 
         const [userLikes] = await pool.query(query, [userId]);
+        // console.log(userLikes);
+
+        let result = {};
 
         // console.log(userLikes);
-        // 각 향수에 대한 카테고리 정보도 가져옴
-        const categoryQuery = `
-            SELECT pc.PerfumeID, c.Keyword
-            FROM PerfumeCategory pc
-            LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
-            WHERE pc.PerfumeID IN (?)`;
+        if (userLikes.length !== 0) {
+            // 각 향수에 대한 카테고리 정보도 가져옴
+            const categoryQuery = `
+                SELECT pc.PerfumeID, c.Keyword
+                FROM PerfumeCategory pc
+                LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
+                WHERE pc.PerfumeID IN (?)`;
 
-        const [categories] = await pool.query(categoryQuery, [
-            userLikes.map((perfume) => perfume.PerfumeID),
-        ]);
-
-        const result = {
-            perfumes: userLikes,
-            categories: categories,
-        };
+            const [categories] = await pool.query(categoryQuery, [
+                userLikes.map((perfume) => perfume.PerfumeID),
+            ]);
+            // console.log(categories);
+            result = {
+                perfumes: userLikes,
+                categories: categories,
+            };
+        }
 
         conn.release();
 
@@ -110,7 +115,7 @@ export const getAllPerfumes = async () => {
         const query = `
         SELECT * FROM Perfume`;
         const [allPerfumes] = await pool.query(query);
-        console.log(allPerfumes);
+        // console.log(allPerfumes);
 
         const categoryQuery = `
             SELECT pc.PerfumeID, c.Keyword
@@ -125,7 +130,7 @@ export const getAllPerfumes = async () => {
             perfumes: allPerfumes,
             categories: categories,
         };
-        console.log(result);
+        // console.log(result);
 
         conn.release();
 
