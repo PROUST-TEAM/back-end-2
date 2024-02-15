@@ -96,7 +96,7 @@ paths:
                 - AI
             summary: 향수 추천
             parameters:
-                - name: userId
+                - name: authorization
                   in: header
                   required: false
 

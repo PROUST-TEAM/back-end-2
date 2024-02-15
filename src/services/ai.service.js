@@ -2,7 +2,6 @@ import { searchPerfumeResult } from "../models/ai.dao.js";
 import { perfumeResultResponseDTO } from "../dtos/ai.dto.js";
 import OpenAI from "openai";
 import { getUserLikes, getAllPerfumes } from "../models/ai.dao.js";
-import mecab from "mecab-ya";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
