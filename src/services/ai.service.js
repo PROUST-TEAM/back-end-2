@@ -103,21 +103,22 @@ export const recommendPerfume = async (userId) => {
     const likedPerfumeIds = userLikesResult.perfumes.map(
         (perfume) => perfume.PerfumeID
     );
+    // console.log(likedPerfumeIds);
 
-    const userLikesDescription = userLikesResult.perfumes.map(
-        (perfume) => perfume.Description
-    );
-    // console.log(userLikesDescription.join(" "));
+    const userLikesDescription = userLikesResult.perfumes
+        .map((perfume) => perfume.Description)
+        .join(", ");
+    // console.log("로그1" + userLikesDescription);
 
     const userLikesEmbedding = await textEmbedding(userLikesDescription);
-    console.log(userLikesEmbedding);
+    // console.log("로그2" + userLikesEmbedding);
 
     // 전체 향수 데이터베이스
     // const allPerfumesResult = perfumeResultResponseDTO(
     //     await getAllPerfumes()
     // ).slice(0, 2);
     const allPerfumesResult = await getAllPerfumes();
-    console.log(allPerfumesResult);
+    // console.log(allPerfumesResult);
 
     // 전체 향수의 설명
     const allPerfumesDescription = allPerfumesResult.perfumes.map(
@@ -141,6 +142,7 @@ export const recommendPerfume = async (userId) => {
                 );
                 similarities.push({ perfumeIndex: j, similarity });
             }
+            // console.log("로그4" + i, j);
         }
     }
 
@@ -148,7 +150,7 @@ export const recommendPerfume = async (userId) => {
         .sort((a, b) => b.similarity - a.similarity)
         .slice(0, 3)
         .map((item) => item.perfumeIndex);
-    console.log(recommendedPerfumeIndices);
+    // console.log("로그3" + recommendedPerfumeIndices);
 
     // 추천된 향수 가져오기
     const recommendedPerfumes = recommendedPerfumeIndices.map(
