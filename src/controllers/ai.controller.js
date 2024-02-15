@@ -3,11 +3,11 @@ import { status } from "../../config/response.status.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
 
-import { searchPerfume, recommendPerfumeUser } from "../services/ai.service.js";
+import { searchPerfume, recommendPerfume } from "../services/ai.service.js";
 
 export const Search = async (req, res, next) => {
     const searchText = req.body.search;
-    console.log(searchText);
+    // console.log(searchText);
     const result = await searchPerfume(searchText);
     // console.log("searchText", searchText);
     // console.log("result", result);
@@ -24,7 +24,7 @@ export const Recommend = async (req, res, next) => {
         const id = decodedToken.userId;
         const user = await User.findById(id);
         const userId = user.UserID;
-        const result = await recommendPerfumeUser(userId);
+        const result = await recommendPerfume(userId);
 
         res.status(200).json(
             response(
