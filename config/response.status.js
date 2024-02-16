@@ -71,4 +71,7 @@ export const status = {
   EMAIL_SEND_ERR:{status:StatusCodes.BAD_REQUEST,isSuccess:false,code:"VALID4001",message:"이메일이 전송되지 않았습니다"},
   // comment err
   COMMENT_ALREADY_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "COMMENT4001", message: "같은 내용의 코멘트가 존재합니다." },
+
+  // 검색 에러
+  SEARCH_ERR : { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SEARCH4001", message: "흠... 잘 모르겠는데, 다시 검색해줄래?" },
 };
