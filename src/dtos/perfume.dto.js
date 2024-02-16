@@ -69,7 +69,7 @@ export const previewperfumeCommentContentUserResponseDTO = (data) => {
   }
 
   console.log(perfume_comment_contents_user);
-  return { perfume_comment_contents_userData: perfume_comment_contents_user };
+  return { perfume_comment_contentsData: perfume_comment_contents_user };
 };
 
 // 향수 코멘트 조회 (비로그인 유저)
