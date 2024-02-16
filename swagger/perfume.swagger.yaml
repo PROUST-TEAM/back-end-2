@@ -533,6 +533,10 @@ paths:
                 example: "like success!"
               data:
                 type: object
+                properties:
+                  status:
+                    type: string
+                    example: "A"
 
         "400":
           description: 잘못된 요청

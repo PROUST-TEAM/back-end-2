@@ -89,5 +89,6 @@ export const previewperfumeCommentContentResponseDTO = (data) => {
 
 // 향수 찜하기
 export const changeperfumeLikeResponseDTO = (perfumeLike) => {
-  return { Status: perfumeLike[0].Status };
+  const status = perfumeLike.status;
+  return { status };
 };

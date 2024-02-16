@@ -143,18 +143,27 @@ export const changeperfumeLike = async (Name, UserID) => {
     const [existingLike] = await pool.query(getPerfumeLikeStatusSql, [UserID, Name]);
 
     let result;
+    let updatedStatus;
 
     if (existingLike.length === 0) {
       // 찜이 없는 경우, 새로운 찜 생성
       result = await pool.query(insertPerfumeLikeSql, [UserID, "A", Name]);
+      updatedStatus = "A"; // 새로운 찜이 생성되면 상태는 A로 설정
     } else {
       // 찜이 있는 경우, 찜 상태 업데이트 (A -> D, D -> A)
       const newStatus = existingLike[0].Status === "A" ? "D" : "A";
       result = await pool.query(updatePerfumeLikeSql, [newStatus, UserID, Name]);
+      updatedStatus = newStatus; // 업데이트된 상태를 설정
     }
 
+    const status = updatedStatus;
+
     conn.release();
-    return result[0].insertId;
+    // 반환 값에 업데이트된 상태 추가
+    const responseData = { ...result[0], status };
+
+    // DTO로 반환
+    return responseData;
   } catch (err) {
     console.error("Error in changeperfumeLike:", err); // 추가: 에러 발생 시 에러 메시지 출력
     throw new BaseError(status.PARAMETER_IS_WRONG);
