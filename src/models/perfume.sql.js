@@ -1,6 +1,6 @@
 // 향수 상세 정보 조회
 
-export const getPerfumeId = "SELECT p.Name, p.NameKor, p.Description, p.Image " + "FROM Perfume p " + "WHERE p.Name = ? ;";
+export const getPerfumeId = "SELECT p.Name, p.NameKor, p.Description, p.Image, p.Hashtag " + "FROM Perfume p " + "WHERE p.Name = ? ;";
 
 // 향수 카테고리 정보 조회
 
@@ -28,7 +28,7 @@ export const getCommentUserId = "SELECT cm.Content " + "FROM Comment cm JOIN Per
 
 // 향수 코멘트 조회 (비로그인 유저) -- 최신 댓글 3개까지
 
-export const getCommentId = "SELECT cm.Content " + "FROM Comment cm JOIN Perfume p ON cm.PerfumeID = p.PerfumeID " + "WHERE p.Name = ?" + "ORDER BY cm.Created_At DESC LIMIT 3 ;";
+export const getCommentId = "SELECT subquery.Content FROM ( SELECT cm.Content, cm.Created_At FROM Comment cm JOIN Perfume p ON cm.PerfumeID = p.PerfumeID WHERE p.Name = ? ORDER BY cm.Created_At DESC LIMIT 3) AS subquery ORDER BY subquery.Created_At ASC;";
 
 // 찜 상태 조회
 export const getPerfumeLikeStatusSql = "SELECT up.Status FROM UserPerfume up WHERE up.UserID = (SELECT UserID FROM User WHERE ID = ?) and up.PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?);";

@@ -8,6 +8,7 @@ export const previewperfumeContentResponseDTO = (data) => {
       nameKor: data[i].NameKor,
       description: data[i].Description,
       imageUrl: data[i].Image,
+      hashtag: data[i].Hashtag,
     });
   }
 
@@ -69,7 +70,7 @@ export const previewperfumeCommentContentUserResponseDTO = (data) => {
   }
 
   console.log(perfume_comment_contents_user);
-  return { perfume_comment_contents_userData: perfume_comment_contents_user };
+  return { perfume_comment_contentsData: perfume_comment_contents_user };
 };
 
 // 향수 코멘트 조회 (비로그인 유저)
@@ -88,5 +89,6 @@ export const previewperfumeCommentContentResponseDTO = (data) => {
 
 // 향수 찜하기
 export const changeperfumeLikeResponseDTO = (perfumeLike) => {
-  return { Status: perfumeLike[0].Status };
+  const status = perfumeLike.status;
+  return { status };
 };
