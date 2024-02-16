@@ -1,6 +1,7 @@
 import { pool } from "../../config/db.config.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
+import { perfumeResultResponseDTO } from "../dtos/ai.dto.js";
 
 export const searchPerfumeResult = async (searchText) => {
     try {
@@ -134,7 +135,9 @@ export const getAllPerfumes = async () => {
 
         conn.release();
 
-        return result;
+        // console.log("dao" + JSON.stringify(perfumeResultResponseDTO(result)));
+
+        return perfumeResultResponseDTO(result);
     } catch (err) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
     }

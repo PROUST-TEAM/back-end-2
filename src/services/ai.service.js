@@ -18,9 +18,10 @@ export const searchPerfume = async (searchText) => {
         } else {
             const result2 = await getAllPerfumes();
             // console.log("reseult2" + result2);
-            const allPerfumes = JSON.stringify(
-                perfumeResultResponseDTO(result2)
-            );
+            // const allPerfumes = JSON.stringify(
+            //     perfumeResultResponseDTO(result2)
+            // );
+            const allPerfumes = JSON.stringify(result2);
             // const like_content = likeContent();
             // console.log(allPerfumes);
 
@@ -29,7 +30,7 @@ export const searchPerfume = async (searchText) => {
                     { role: "system", content: "취'향'을 찾아봐" },
                     {
                         role: "user",
-                        content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 추천해주고 리스트의 DTO 객체 형태로만 반환해줘.`,
+                        content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 추천해서 리스트의 DTO 객체 형태로만 반환해줘.`,
                     },
                 ],
                 model: "gpt-4-turbo-preview",
@@ -38,7 +39,7 @@ export const searchPerfume = async (searchText) => {
             });
 
             const aiResult = chatCompletion.choices[0].message.content;
-            console.log("result2" + aiResult);
+            // console.log("result2" + aiResult);
 
             // 응답이 '```json'으로 시작하는지 확인합니다.
             if (!aiResult.startsWith("```json")) {
@@ -47,10 +48,10 @@ export const searchPerfume = async (searchText) => {
 
             // "```json"과 "```" 사이의 문자열 추출
             var jsonText = aiResult.match(/```json([\s\S]*)```/)[1];
-            console.log(jsonText);
+            // console.log(jsonText);
             // JSON 문자열을 파싱하여 객체 배열로 변환
             const perfumeArray = JSON.parse(jsonText);
-            console.log(perfumeArray.length);
+            // console.log(perfumeArray.length);
             if (perfumeArray.length === 0) {
                 throw new BaseError(status.SEARCH_ERR);
             } else {
@@ -137,21 +138,17 @@ export const recommendPerfume = async (userId) => {
     // console.log(allPerfumesResult);
 
     // 전체 향수의 설명
-    const allPerfumesDescription = allPerfumesResult.perfumes.map(
-        (perfume) => perfume.Description
+    const allPerfumesDescription = allPerfumesResult.map(
+        (perfume) => perfume.description
     );
-    // console.log(allPerfumesDescription);
+    // console.log("설명" + typeof allPerfumesDescription);
     const allPerfumesEmbedding = await textEmbedding(allPerfumesDescription);
     // console.log(allPerfumesEmbedding);
 
     const similarities = [];
     for (let i = 0; i < userLikesEmbedding.length; i++) {
         for (let j = 0; j < allPerfumesEmbedding.length; j++) {
-            if (
-                !likedPerfumeIds.includes(
-                    allPerfumesResult.perfumes[j].PerfumeID
-                )
-            ) {
+            if (!likedPerfumeIds.includes(allPerfumesResult[j].perfumeID)) {
                 const similarity = calculateCosineSimilarity(
                     userLikesEmbedding[i].embedding,
                     allPerfumesEmbedding[j].embedding
@@ -170,7 +167,7 @@ export const recommendPerfume = async (userId) => {
 
     // 추천된 향수 가져오기
     const recommendedPerfumes = recommendedPerfumeIndices.map(
-        (index) => allPerfumesResult.perfumes[index]
+        (index) => allPerfumesResult[index]
     );
 
     return recommendedPerfumes;
