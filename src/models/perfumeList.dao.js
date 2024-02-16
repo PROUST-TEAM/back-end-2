@@ -2,7 +2,7 @@ import { pool } from "../../config/db.config.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 
-// 향수 상세 정보 조회
+// 취'향'목록 조회
 export const getPreviewperfumeList = async (UserID, Keyword) => {
   try {
     const conn = await pool.getConnection();
@@ -17,7 +17,18 @@ export const getPreviewperfumeList = async (UserID, Keyword) => {
       } else {
         // Keyword가 여러 카테고리를 나타내는 배열인 경우
         const placeholders = Array(Keyword.length).fill("?").join(", ");
-        const getPerfumeListQuery = "SELECT p.Name, p.Image, up.Status, c.Keyword " + "FROM Perfume p " + "JOIN UserPerfume up ON up.PerfumeID = p.PerfumeID " + "JOIN PerfumeCategory pc ON pc.PerfumeID = p.PerfumeID " + "JOIN Category c ON pc.CategoryID = c.CategoryID " + "WHERE up.UserID = (SELECT UserID FROM User WHERE ID = ?) AND up.Status = 'A' AND c.Keyword IN (" + placeholders + ");";
+        const getPerfumeListQuery = `
+          SELECT p.Name, p.Image, up.Status, GROUP_CONCAT(c.Keyword) as keywords
+          FROM Perfume p
+          JOIN UserPerfume up ON up.PerfumeID = p.PerfumeID
+          JOIN PerfumeCategory pc ON pc.PerfumeID = p.PerfumeID
+          JOIN Category c ON pc.CategoryID = c.CategoryID
+          WHERE up.UserID = (SELECT UserID FROM User WHERE ID = ?) 
+              AND up.Status = 'A' 
+              AND c.Keyword IN (${placeholders})
+          GROUP BY p.Name, p.Image, up.Status
+          HAVING COUNT(DISTINCT c.Keyword) = ${Keyword.length};          
+        `;
         const [perfumeList_contents] = await pool.query(getPerfumeListQuery, [UserID, ...Keyword]);
         conn.release();
         return perfumeList_contents;
