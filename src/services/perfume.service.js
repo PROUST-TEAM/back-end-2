@@ -2,7 +2,7 @@ import { BaseError } from "../../config/error.js";
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 
-import { addperfumeWriteResponseDTO } from "../dtos/perfume.dto.js";
+import { addperfumeWriteResponseDTO, changeperfumeLikeResponseDTO } from "../dtos/perfume.dto.js";
 import { addperfumeWrite, getperfumeWrite, addperfumeDelete, changeperfumeLike } from "../models/perfume.dao.js";
 
 export const joinperfumeWrite = async (Name, UserID, body) => {
@@ -25,4 +25,8 @@ export const joinperfumeDelete = async (Name, UserID, Content) => {
 // 향수 찜하기
 export const perfumeLikeContent = async (Name, UserID) => {
   const joinperfumeLikeData = await changeperfumeLike(Name, UserID);
+
+  const responseData = changeperfumeLikeResponseDTO(joinperfumeLikeData);
+
+  return responseData;
 };
