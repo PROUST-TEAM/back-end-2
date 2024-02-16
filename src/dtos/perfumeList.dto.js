@@ -1,7 +1,7 @@
 // 취'향'목록 조회
 export const previewperfumeListResponseDTO = (data) => {
-  console.log(data);
-  console.log("----------");
+  // console.log(data);
+  // console.log("----------");
   const perfumeList_contents = [];
 
   // 중복을 제거하기 위한 임시 객체
@@ -31,6 +31,6 @@ export const previewperfumeListResponseDTO = (data) => {
     perfumeList_contents.push(perfumeMap[name]);
   }
 
-  console.log(perfumeList_contents);
+  // console.log(perfumeList_contents);
   return { perfumeList_contentsData: perfumeList_contents };
 };
