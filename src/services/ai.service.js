@@ -2,47 +2,63 @@ import { searchPerfumeResult } from "../models/ai.dao.js";
 import { perfumeResultResponseDTO } from "../dtos/ai.dto.js";
 import OpenAI from "openai";
 import { getUserLikes, getAllPerfumes } from "../models/ai.dao.js";
+import { BaseError } from "../../config/error.js";
+import { status } from "../../config/response.status.js";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
 export const searchPerfume = async (searchText) => {
-    const result = await searchPerfumeResult(searchText);
-    console.log("reseult" + result.length);
-    if (Object.keys(result).length !== 0) {
-        return perfumeResultResponseDTO(result);
-    } else {
-        const result2 = await getAllPerfumes();
-        // console.log("reseult2" + result2);
-        const allPerfumes = JSON.stringify(perfumeResultResponseDTO(result2));
-        // const like_content = likeContent();
-        // console.log(allPerfumes);
+    try {
+        const result = await searchPerfumeResult(searchText);
+        // console.log("reseult" + Object.keys(result));
+        if (Object.keys(result).length !== 0) {
+            return perfumeResultResponseDTO(result);
+        } else {
+            const result2 = await getAllPerfumes();
+            // console.log("reseult2" + result2);
+            const allPerfumes = JSON.stringify(
+                perfumeResultResponseDTO(result2)
+            );
+            // const like_content = likeContent();
+            // console.log(allPerfumes);
 
-        const chatCompletion = await openai.chat.completions.create({
-            messages: [
-                { role: "system", content: "취'향'을 찾아봐" },
-                {
-                    role: "user",
-                    content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 3개까지 추천해주고 리스트의 DTO 객체 형태로만 반환해줘`,
-                },
-            ],
-            model: "gpt-4-turbo-preview",
-            temperature: 0.5, // 낮은 값으로 설정하여 일관된 결과를 얻을 수 있습니다.
-            seed: 12345, // 임의의 값으로 설정하여 결과의 재현성을 보장합니다.
-        });
+            const chatCompletion = await openai.chat.completions.create({
+                messages: [
+                    { role: "system", content: "취'향'을 찾아봐" },
+                    {
+                        role: "user",
+                        content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 추천해주고 리스트의 DTO 객체 형태로만 반환해줘.`,
+                    },
+                ],
+                model: "gpt-4-turbo-preview",
+                temperature: 0.5, // 낮은 값으로 설정하여 일관된 결과를 얻을 수 있습니다.
+                seed: 12345, // 임의의 값으로 설정하여 결과의 재현성을 보장합니다.
+            });
 
-        const aiResult = chatCompletion.choices[0].message.content;
-        console.log("result" + aiResult);
+            const aiResult = chatCompletion.choices[0].message.content;
+            console.log("result2" + aiResult);
 
-        // "```json"과 "```" 사이의 문자열 추출
-        var jsonText = aiResult.match(/```json([\s\S]*)```/)[1];
-        console.log(jsonText);
+            // 응답이 '```json'으로 시작하는지 확인합니다.
+            if (!aiResult.startsWith("```json")) {
+                throw new BaseError(status.SEARCH_ERR);
+            }
 
-        // JSON 문자열을 파싱하여 객체 배열로 변환
-        const perfumeArray = JSON.parse(jsonText);
-
-        return perfumeArray;
+            // "```json"과 "```" 사이의 문자열 추출
+            var jsonText = aiResult.match(/```json([\s\S]*)```/)[1];
+            console.log(jsonText);
+            // JSON 문자열을 파싱하여 객체 배열로 변환
+            const perfumeArray = JSON.parse(jsonText);
+            console.log(perfumeArray.length);
+            if (perfumeArray.length === 0) {
+                throw new BaseError(status.SEARCH_ERR);
+            } else {
+                return perfumeArray;
+            }
+        }
+    } catch (error) {
+        throw new BaseError(status.SEARCH_ERR);
     }
     // console.log("searchresult", result);
 };
