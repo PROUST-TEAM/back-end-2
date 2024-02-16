@@ -8,6 +8,7 @@ export const previewperfumeContentResponseDTO = (data) => {
       nameKor: data[i].NameKor,
       description: data[i].Description,
       imageUrl: data[i].Image,
+      hashtag: data[i].Hashtag,
     });
   }
 

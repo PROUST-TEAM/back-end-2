@@ -1,6 +1,6 @@
 // 향수 상세 정보 조회
 
-export const getPerfumeId = "SELECT p.Name, p.NameKor, p.Description, p.Image " + "FROM Perfume p " + "WHERE p.Name = ? ;";
+export const getPerfumeId = "SELECT p.Name, p.NameKor, p.Description, p.Image, p.Hashtag " + "FROM Perfume p " + "WHERE p.Name = ? ;";
 
 // 향수 카테고리 정보 조회
 
