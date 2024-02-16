@@ -29,7 +29,7 @@ export const searchPerfume = async (searchText) => {
                     { role: "system", content: "취'향'을 찾아봐" },
                     {
                         role: "user",
-                        content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 추천해주고 리스트의 DTO 객체 형태로만 반환해줘.`,
+                        content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 추천해서 리스트의 DTO 객체 형태로만 반환해줘.`,
                     },
                 ],
                 model: "gpt-4-turbo-preview",
