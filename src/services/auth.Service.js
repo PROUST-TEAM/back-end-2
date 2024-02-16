@@ -46,7 +46,7 @@ export const loginService = async (id, password) => {
       userId: user.ID.toString(),
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "5h" }
   );
   return { message: "로그인 성공", token: token, userId: user.ID.toString() };
 };
