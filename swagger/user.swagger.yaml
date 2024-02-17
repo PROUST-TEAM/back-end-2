@@ -516,7 +516,7 @@ paths:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.                
 /user/edit:
-    post:
+    patch:
       tags:
         - User
       summary: 사용자 정보 수정 요청
