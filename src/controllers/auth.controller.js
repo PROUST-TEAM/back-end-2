@@ -30,7 +30,7 @@ export const myPage= async (req,res,next)=>{
 export const InfoEdit= async (req,res,next)=>{
   console.log('회원정보 수정을 요청하였습니다');
   return res.send(response(status.SUCCESS, await authService.infoEditService
-    (req.userId,req.body.password,req.body.name) ));
+    (req.userId,req.body.password,req.body.name,req.body.confirmPassword) ));
 };
 
 export const sendAuthCode = async (req, res, next) => {  

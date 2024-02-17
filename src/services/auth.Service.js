@@ -94,10 +94,10 @@ export const myPageService = async (UserID) => {
     throw new BaseError(status.MYPAGE_NOT_MEMBER);
   }
   const result = await User.getMyInfo(UserID);
-  return { message: "mypage 조회", userId: result.id, password: result.password, name: result.UserName };
+  return { message: "mypage 조회", userId: result.id, name: result.UserName };
 };
 //회원정보 수정
-export const infoEditService = async (UserID, password, userName) => {
+export const infoEditService = async (UserID, password, userName,confirmPassword) => {
   if (!UserID || !password || !userName) {
     throw new BaseError(JSON.stringify(status.MEMBER_UPDATE_INPUT_EMPTY));
   }
@@ -106,6 +106,9 @@ export const infoEditService = async (UserID, password, userName) => {
   }
   if (password.length < 8) {
     throw new BaseError(JSON.stringify(status.MEMBER_UPDATE_PASSWORD_SHORT));
+  }
+  if(password!==confirmPassword){
+    throw new BaseError(status.MEMBER_UPDATE_PASSWORD_NOT_MATCH);
   }
   const existingUser = await User.findById(UserID);
   if (!existingUser) {
