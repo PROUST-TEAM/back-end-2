@@ -64,6 +64,7 @@ export const searchPerfume = async (searchText) => {
             }
         }
     } catch (error) {
+        console.log(error);
         throw new BaseError(status.SEARCH_ERR);
     }
     // console.log("searchresult", result);
