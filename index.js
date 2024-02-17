@@ -28,6 +28,23 @@ app.use(express.json()); // request의 본문을 json으로 해석할 수 있도
 app.use(express.urlencoded({ extended: false })); // 단순 객체 문자열 형태로 본문 데이터 해석
 app.use(express.static("uploads")); // 'uploads'는 이미지 파일이 저장된 디렉토리 경로
 
+//모든 도메인
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
+//특정 도메인
+const options = {
+  origin: "https://proust-weld.vercel.app/home", // 접근 권한을 부여하는 도메인
+  credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
+  optionsSuccessStatus: 200, // 응답 상태 200으로 설정
+};
+
+app.use(cors(options));
+
 app.use(
   session({
     secret: "your_secret_key",
