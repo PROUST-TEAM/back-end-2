@@ -170,6 +170,7 @@ export const emailAuth = async (id) => {
 //인증번호 확인 
 export const validConfirmService = async(userInputCode, sessionAuthCode) =>{
   if (Number(userInputCode) !== Number(sessionAuthCode)) {
+    console.log(sessionAuthCode);
     throw new BaseError(status.VALID_CODE_NOT_MATCH);
   } else{
     return { message: "인증에 성공하였습니다" };
