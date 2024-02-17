@@ -1,6 +1,6 @@
 import express from "express";
 import { isAuth } from "../middlewares/jwt.js";
-import { Login, logout, UserDelete, myPage, InfoEdit, Signup, findPW, sendAuthCode } from "../controllers/auth.controller.js";
+import { Login, logout, UserDelete, myPage, InfoEdit, Signup, findPW, sendAuthCode ,validConfirm} from "../controllers/auth.controller.js";
 //
 import asyncHandler from "express-async-handler";
 import passport from "passport";
@@ -17,13 +17,14 @@ SocialNaver();
 UserRoutes.post("/login", asyncHandler(Login));
 UserRoutes.post("/signup/request", asyncHandler(sendAuthCode));
 UserRoutes.post("/signup/confirm", asyncHandler(Signup));
+UserRoutes.post("/signup/valid",asyncHandler(validConfirm));
 UserRoutes.post("/logout", isAuth, asyncHandler(logout));
 UserRoutes.delete("/delete", isAuth, asyncHandler(UserDelete));
 UserRoutes.get("/mypage", isAuth, asyncHandler(myPage));
 UserRoutes.patch("/edit", isAuth, asyncHandler(InfoEdit));
 UserRoutes.post("/findPW/request", asyncHandler(sendAuthCode));
 UserRoutes.post("/findPW/confirm", asyncHandler(findPW));
-
+UserRoutes.post("/findPW/valid",asyncHandler(validConfirm));
 UserRoutes.get("/kakao", passport.authenticate("kakao", { session: false }));
 UserRoutes.get("/kakao/callback", passport.authenticate("kakao", { session: false, failureRedirect: "/" }), (req, res) => {
   res.status(200).json(response({ isSuccess: true, code: 200, message: "로그인에 성공하였습니다." }, req.user));

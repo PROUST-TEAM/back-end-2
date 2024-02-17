@@ -14,7 +14,7 @@ export const logout = (req, res, next) => {
 export const Signup = async (req, res, next) => {
   console.log('회원가입을 요청했습니다');
   return res.send(response(status.SUCCESS, await authService.signupService
-    (req.body.id, req.body.password,req.body.name,req.body.confirmPassword,req.body.UserAgree,req.body.userInputCode,req.session.authCode)))
+    (req.body.id, req.body.password,req.body.name,req.body.confirmPassword,req.body.UserAgree)));
 };
 
 export const UserDelete = async (req, res, next) => {
@@ -40,9 +40,14 @@ export const sendAuthCode = async (req, res, next) => {
   return res.send(response(status.SUCCESS, authCode ));
 };
 
+export const validConfirm = async(req,res,next) => {
+  console.log("인증번호 확인을 진행합니다");
+  return res.send(response(status.SUCCESS, await authService.validConfirmService(req.body.userInputCode,req.session.authCode)));
+}
+
 export const findPW = async (req, res, next) => {
   console.log('비밀번호 찾기를 요청하였습니다');
-  return res.send(response(status.SUCCESS, await authService.findPWService(req.body.id,req.body.userInputCode,req.session.authCode) ));
+  return res.send(response(status.SUCCESS, await authService.findPWService(req.body.id) ));
 };
 
 
