@@ -51,8 +51,8 @@ export const loginService = async (id, password) => {
   return { message: "로그인 성공", token: token, userId: user.ID.toString() };
 };
 //회원가입
-export const signupService = async (id, password, userName, confirmPassword, UserAgree, userInputCode, sessionAuthCode) => {
-  if (!id || !password || !userName || !UserAgree || !confirmPassword || !userInputCode) {
+export const signupService = async (id, password, userName, confirmPassword, UserAgree) => {
+  if (!id || !password || !userName || !UserAgree || !confirmPassword ) {
     throw new BaseError(status.SIGNUP_INPUT_EMPTY);
   }
   if (!isEmail(id)) {
@@ -71,9 +71,7 @@ export const signupService = async (id, password, userName, confirmPassword, Use
   if (parseInt(UserAgree) === 0) {
     throw new BaseError(status.SIGNUP_AGREE_FALSE);
   }
-  if (Number(userInputCode) !== Number(sessionAuthCode)) {
-    throw new BaseError(status.VALID_CODE_NOT_MATCH);
-  }
+  
   const hashedPassword = await bcrypt.hash(password, 12);
   const result = await User.addUser(id, userName, hashedPassword, UserAgree);
   return { message: "회원가입 완료", userId: result.id };
@@ -120,16 +118,16 @@ export const infoEditService = async (UserID, password, userName,confirmPassword
 };
 
 //비밀번호 찾기
-export const findPWService = async (id, userInputCode, sessionAuthCode) => {
+export const findPWService = async (id) => {
   const user = await User.findById(id);
+  if (!id) {
+    throw new BaseError(status.SIGNUP_INPUT_EMPTY);
+  }
   if (!user) {
     throw new BaseError(status.FIND_PW_NOT_EXIST);
   }
-  if (Number(userInputCode) !== Number(sessionAuthCode)) {
-    throw new BaseError(status.VALID_CODE_NOT_MATCH);
-  } else {
+  else {
     const tempPassword = generateRandomPassword();
-
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
     user.password = hashedPassword;
     const result = await User.UpdatePass(id, hashedPassword);
@@ -169,3 +167,11 @@ export const emailAuth = async (id) => {
     throw new BaseError(status.INTERNAL_SERVER_ERROR);
   }
 };
+//인증번호 확인 
+export const validConfirmService = async(userInputCode, sessionAuthCode) =>{
+  if (Number(userInputCode) !== Number(sessionAuthCode)) {
+    throw new BaseError(status.VALID_CODE_NOT_MATCH);
+  } else{
+    return { message: "인증에 성공하였습니다" };
+  }
+}
