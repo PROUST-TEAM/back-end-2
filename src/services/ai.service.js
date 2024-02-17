@@ -30,7 +30,8 @@ export const searchPerfume = async (searchText) => {
                     { role: "system", content: "취'향'을 찾아봐" },
                     {
                         role: "user",
-                        content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 추천해서 리스트의 DTO 객체 형태로만 반환해줘.`,
+                        content: `${allPerfumes} 리스트에서 ${searchText} 관련 향수 추천해서 리스트의 DTO 객체 형태로만 반환해줘.
+                        `,
                     },
                 ],
                 model: "gpt-4-turbo-preview",
@@ -39,23 +40,27 @@ export const searchPerfume = async (searchText) => {
             });
 
             const aiResult = chatCompletion.choices[0].message.content;
-            // console.log("result2" + aiResult);
+            console.log("result2 " + aiResult);
 
             // 응답이 '```json'으로 시작하는지 확인합니다.
-            if (!aiResult.startsWith("```json")) {
-                throw new BaseError(status.SEARCH_ERR);
-            }
+            // if (!aiResult.startsWith("```json")) {
+            //     throw new BaseError(status.SEARCH_ERR);
+            // }
 
             // "```json"과 "```" 사이의 문자열 추출
-            var jsonText = aiResult.match(/```json([\s\S]*)```/)[1];
-            // console.log(jsonText);
-            // JSON 문자열을 파싱하여 객체 배열로 변환
-            const perfumeArray = JSON.parse(jsonText);
-            // console.log(perfumeArray.length);
-            if (perfumeArray.length === 0) {
+            if (aiResult.length === 0) {
                 throw new BaseError(status.SEARCH_ERR);
             } else {
-                return perfumeArray;
+                var jsonText = aiResult.match(/```json([\s\S]*)```/)[1];
+                console.log("result3 " + jsonText);
+                // JSON 문자열을 파싱하여 객체 배열로 변환
+                const perfumeArray = JSON.parse(jsonText);
+                // console.log(perfumeArray.length);
+                if (perfumeArray.length === 0) {
+                    throw new BaseError(status.SEARCH_ERR);
+                } else {
+                    return perfumeArray;
+                }
             }
         }
     } catch (error) {
