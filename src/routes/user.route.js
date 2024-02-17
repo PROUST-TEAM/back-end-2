@@ -20,7 +20,7 @@ UserRoutes.post("/signup/confirm", asyncHandler(Signup));
 UserRoutes.post("/logout", isAuth, asyncHandler(logout));
 UserRoutes.delete("/delete", isAuth, asyncHandler(UserDelete));
 UserRoutes.get("/mypage", isAuth, asyncHandler(myPage));
-UserRoutes.post("/edit", isAuth, asyncHandler(InfoEdit));
+UserRoutes.patch("/edit", isAuth, asyncHandler(InfoEdit));
 UserRoutes.post("/findPW/request", asyncHandler(sendAuthCode));
 UserRoutes.post("/findPW/confirm", asyncHandler(findPW));
 

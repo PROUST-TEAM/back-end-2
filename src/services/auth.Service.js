@@ -97,8 +97,8 @@ export const myPageService = async (UserID) => {
   return { message: "mypage 조회", userId: result.id, password: result.password, name: result.UserName };
 };
 //회원정보 수정
-export const infoEditService = async (UserID, password, userName, confirmPassword) => {
-  if (!UserID || !password || !userName || !confirmPassword) {
+export const infoEditService = async (UserID, password, userName) => {
+  if (!UserID || !password || !userName) {
     throw new BaseError(JSON.stringify(status.MEMBER_UPDATE_INPUT_EMPTY));
   }
   if (!isEmail(UserID)) {
@@ -106,9 +106,6 @@ export const infoEditService = async (UserID, password, userName, confirmPasswor
   }
   if (password.length < 8) {
     throw new BaseError(JSON.stringify(status.MEMBER_UPDATE_PASSWORD_SHORT));
-  }
-  if (password !== confirmPassword) {
-    throw new BaseError(JSON.stringify(status.MEMBER_UPDATE_PASSWORD_NOT_MATCH));
   }
   const existingUser = await User.findById(UserID);
   if (!existingUser) {
