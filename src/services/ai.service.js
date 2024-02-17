@@ -48,7 +48,10 @@ export const searchPerfume = async (searchText) => {
             // }
 
             // "```json"과 "```" 사이의 문자열 추출
-            if (aiResult.length === 0) {
+            if (
+                aiResult.length === 0 ||
+                !aiResult.match(/```json([\s\S]*)```/)
+            ) {
                 throw new BaseError(status.SEARCH_ERR);
             } else {
                 var jsonText = aiResult.match(/```json([\s\S]*)```/)[1];
@@ -64,7 +67,7 @@ export const searchPerfume = async (searchText) => {
             }
         }
     } catch (error) {
-        console.log(error);
+        // console.log("error222" + error + "///");
         throw new BaseError(status.SEARCH_ERR);
     }
     // console.log("searchresult", result);
