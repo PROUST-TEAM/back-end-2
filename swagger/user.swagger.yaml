@@ -520,7 +520,7 @@ paths:
       tags:
         - User
       summary: 사용자 정보 수정 요청
-      description: 입력된 비밀번호, 확인 비밀번호, 사용자 이름으로 사용자 정보를 수정합니다.
+      description: 입력된 비밀번호, 사용자 이름으로 사용자 정보를 수정합니다.
       security:
       - BearerAuth: []
       parameters:
@@ -533,15 +533,12 @@ paths:
                 password:
                   type: string
                   example: "12345678910"
-                confirmPassword:
-                  type: string
-                  example: "12345678910"
                 name:
                   type: string
                   example: "proust123"
 
       responses:
-        "201":
+        "200":
           description: 정보 수정 완료
           content:
             application/json:
@@ -553,7 +550,7 @@ paths:
                     example: true
                   code:
                     type: integer
-                    example: 201
+                    example: 200
                   message:
                     type: string
                     example: "정보 수정 완료"
