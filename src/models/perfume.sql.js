@@ -12,7 +12,7 @@ export const getlikeId = "SELECT up.Status " + "FROM UserPerfume up " + "JOIN Pe
 
 // 향수 코멘트 작성
 
-export const confirmComment = "SELECT EXISTS(SELECT 1 FROM Comment WHERE UserID = (SELECT UserID FROM User WHERE ID = ?) and Content = ?) as isExistComment;";
+export const confirmComment = "SELECT EXISTS(SELECT 1 FROM Comment c WHERE UserID = (SELECT UserID FROM User WHERE ID = ?) AND Content = ? AND PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?)) as isExistComment;";
 
 export const insertperfumeWriteSql = "INSERT INTO Comment (UserID, Content, PerfumeID) SELECT (SELECT UserID FROM User WHERE ID = ?), ?, PerfumeID FROM Perfume WHERE Name = ?";
 

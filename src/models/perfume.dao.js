@@ -50,7 +50,7 @@ export const addperfumeWrite = async (Name, UserID, data) => {
   try {
     const conn = await pool.getConnection();
 
-    const [confirm] = await pool.query(confirmComment, [UserID, data.Content]);
+    const [confirm] = await pool.query(confirmComment, [UserID, data.Content, Name]);
 
     if (confirm[0].isExistComment) {
       conn.release();
