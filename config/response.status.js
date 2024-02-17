@@ -73,5 +73,5 @@ export const status = {
   COMMENT_ALREADY_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "COMMENT4001", message: "같은 내용의 코멘트가 존재합니다." },
 
   // 검색 에러
-  SEARCH_ERR : { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "SEARCH4001", message: "흠... 잘 모르겠는데, 다시 검색해줄래?" },
+  SEARCH_ERR : { status: StatusCodes.INTERNAL_SERVER_ERROR, isSuccess: false, code: "SEARCH5001", message: "흠... 잘 모르겠는데, 다시 검색해줄래?" },
 };
