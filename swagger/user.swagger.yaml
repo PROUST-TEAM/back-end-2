@@ -533,6 +533,9 @@ paths:
                 password:
                   type: string
                   example: "12345678910"
+                confirmPassword:
+                  type: string
+                  example: "12345678910"
                 name:
                   type: string
                   example: "proust123"
@@ -629,9 +632,6 @@ paths:
                       userId:
                         type: string
                         example: "qws15610@naver.com"
-                      password:
-                        type: string
-                        example: "$2a$12$M/jNy07AwdlB2FQvvvVVsuX.3LCpyrnwipZn.WKNQG0hFvcaHWQD2"
                       name:
                         type: string
                         example: "proust1"
