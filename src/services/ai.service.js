@@ -46,7 +46,7 @@ export const searchPerfume = async (searchText) => {
                     },
                 ],
                 model: "gpt-4-turbo-preview",
-                temperature: 0.5, // 낮은 값으로 설정하여 일관된 결과를 얻을 수 있습니다.
+                temperature: 0, // 낮은 값으로 설정하여 일관된 결과를 얻을 수 있습니다.
                 seed: 12345, // 임의의 값으로 설정하여 결과의 재현성을 보장합니다.
             });
 
