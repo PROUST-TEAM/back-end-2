@@ -6,13 +6,13 @@ import {
     perfumeSearchResponseDTO,
 } from "../dtos/ai.dto.js";
 
-export const searchPerfumeResult = async (userId, searchText) => {
+export const searchPerfumeResult = async (searchText) => {
     try {
         const conn = await pool.getConnection();
-        let query;
+
         let perfumes = [];
-        if (userId === null) {
-            query = `
+        // if (userId === null) {
+        const query = `
                 SELECT DISTINCT p.*, null AS Status
                 FROM Perfume p
                 LEFT JOIN PerfumeCategory pc ON p.PerfumeID = pc.PerfumeID
@@ -21,33 +21,33 @@ export const searchPerfumeResult = async (userId, searchText) => {
                 OR p.NameKor LIKE ?
                 OR p.Brand LIKE ?
                 OR c.Keyword LIKE ?`;
-            [perfumes] = await pool.query(query, [
-                `%${searchText}%`,
-                `%${searchText}%`,
-                `%${searchText}%`,
-                `%${searchText}%`,
-            ]);
-        } else {
-            query = `
-            SELECT DISTINCT p.*, up.Status
-            FROM Perfume p
-            LEFT JOIN PerfumeCategory pc ON p.PerfumeID = pc.PerfumeID
-            LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
-            LEFT JOIN UserPerfume up ON p.PerfumeID = up.PerfumeID AND up.UserID = ?
-            WHERE p.Name LIKE ? 
-            OR p.NameKor LIKE ? 
-            OR p.Brand LIKE ?
-            OR c.Keyword LIKE ?`;
-            [perfumes] = await pool.query(query, [
-                userId,
-                `%${searchText}%`,
-                `%${searchText}%`,
-                `%${searchText}%`,
-                `%${searchText}%`,
-            ]);
-        }
+        [perfumes] = await pool.query(query, [
+            `%${searchText}%`,
+            `%${searchText}%`,
+            `%${searchText}%`,
+            `%${searchText}%`,
+        ]);
+        // } else {
+        //     query = `
+        //     SELECT DISTINCT p.*, up.Status
+        //     FROM Perfume p
+        //     LEFT JOIN PerfumeCategory pc ON p.PerfumeID = pc.PerfumeID
+        //     LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
+        //     LEFT JOIN UserPerfume up ON p.PerfumeID = up.PerfumeID AND up.UserID = ?
+        //     WHERE p.Name LIKE ?
+        //     OR p.NameKor LIKE ?
+        //     OR p.Brand LIKE ?
+        //     OR c.Keyword LIKE ?`;
+        //     [perfumes] = await pool.query(query, [
+        //         userId,
+        //         `%${searchText}%`,
+        //         `%${searchText}%`,
+        //         `%${searchText}%`,
+        //         `%${searchText}%`,
+        //     ]);
+        // }
 
-        console.log(perfumes);
+        // console.log(perfumes);
 
         let result = {};
 
@@ -79,41 +79,41 @@ export const searchPerfumeResult = async (userId, searchText) => {
     }
 };
 
-export const getAllPerfumesSearch = async (userId) => {
-    try {
-        const conn = await pool.getConnection();
+// export const getAllPerfumesSearch = async (userId) => {
+//     try {
+//         const conn = await pool.getConnection();
 
-        const query = `
-            SELECT p.*, up.Status
-            FROM Perfume p
-            LEFT JOIN UserPerfume up ON p.PerfumeID = up.PerfumeID AND up.UserID = ?`;
-        const [allPerfumes] = await pool.query(query, userId);
-        // console.log(allPerfumes);
+//         const query = `
+//             SELECT p.*, up.Status
+//             FROM Perfume p
+//             LEFT JOIN UserPerfume up ON p.PerfumeID = up.PerfumeID AND up.UserID = ?`;
+//         const [allPerfumes] = await pool.query(query, userId);
+//         // console.log(allPerfumes);
 
-        const categoryQuery = `
-            SELECT pc.PerfumeID, c.Keyword
-            FROM PerfumeCategory pc
-            LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
-            WHERE pc.PerfumeID IN (?)`;
+//         const categoryQuery = `
+//             SELECT pc.PerfumeID, c.Keyword
+//             FROM PerfumeCategory pc
+//             LEFT JOIN Category c ON pc.CategoryID = c.CategoryID
+//             WHERE pc.PerfumeID IN (?)`;
 
-        const [categories] = await pool.query(categoryQuery, [
-            allPerfumes.map((perfume) => perfume.PerfumeID),
-        ]);
-        const result = {
-            perfumes: allPerfumes,
-            categories: categories,
-        };
-        // console.log(result);
+//         const [categories] = await pool.query(categoryQuery, [
+//             allPerfumes.map((perfume) => perfume.PerfumeID),
+//         ]);
+//         const result = {
+//             perfumes: allPerfumes,
+//             categories: categories,
+//         };
+//         // console.log(result);
 
-        conn.release();
+//         conn.release();
 
-        // console.log("dao" + JSON.stringify(perfumeResultResponseDTO(result)));
+//         // console.log("dao" + JSON.stringify(perfumeResultResponseDTO(result)));
 
-        return perfumeSearchResponseDTO(result);
-    } catch (err) {
-        throw new BaseError(status.PARAMETER_IS_WRONG);
-    }
-};
+//         return perfumeResultResponseDTO(result);
+//     } catch (err) {
+//         throw new BaseError(status.PARAMETER_IS_WRONG);
+//     }
+// };
 
 export const getUserLikes = async (userId) => {
     try {
