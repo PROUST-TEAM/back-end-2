@@ -8,7 +8,7 @@ export const SocialKakao = () => {
     new KakaoStrategy(
       {
         clientID: process.env.KAKAO_ID,
-        callbackURL: "/user/kakao/callback",
+        callbackURL: "https://dev.proust.store/user/kakao/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
