@@ -66,6 +66,7 @@ export const previewperfumeCommentContentUserResponseDTO = (data) => {
   for (let i = 0; i < data.length; i++) {
     perfume_comment_contents_user.push({
       Content: data[i].Content,
+      ID: data[i].ID,
     });
   }
 
@@ -80,6 +81,7 @@ export const previewperfumeCommentContentResponseDTO = (data) => {
   for (let i = 0; i < data.length; i++) {
     perfume_comment_contents.push({
       Content: data[i].Content,
+      ID: data[i].ID,
     });
   }
 
