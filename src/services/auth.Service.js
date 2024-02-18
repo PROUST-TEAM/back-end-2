@@ -31,9 +31,9 @@ export const loginService = async (id, password) => {
   if (!isEmail(id)) {
     throw new BaseError(status.LOGIN_ID_NOT_EMAIL);
   }
-  if (password.length < 8) {
-    throw new BaseError(status.LOGIN_PASSWORD_SHORT);
-  }
+  // if (password.length < 8) {
+  //   throw new BaseError(status.LOGIN_PASSWORD_SHORT);
+  // }
   if (!user) {
     throw new BaseError(status.LOGIN_ID_NOT_EXIST);
   }
