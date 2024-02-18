@@ -5,6 +5,10 @@ paths:
                 - AI
             summary: 향수 검색
             parameters:
+                - name: authorization
+                  in: header
+                  description: Bearer 토큰
+                  required: false
                 - name: search
                   in: body
                   required: true
