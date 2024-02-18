@@ -6,7 +6,7 @@ import {
 import OpenAI from "openai";
 import {
     getUserLikes,
-    getAllPerfumesSearch,
+    // getAllPerfumesSearch,
     getAllPerfumes,
 } from "../models/ai.dao.js";
 import { BaseError } from "../../config/error.js";
@@ -16,23 +16,18 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const searchPerfume = async (userId, searchText, isLoggined) => {
+export const searchPerfume = async (searchText) => {
     try {
         const result = await searchPerfumeResult(
-            userId,
-            searchText,
-            isLoggined
+            // userId,
+            searchText
+            // isLoggined
         );
-        console.log(
-            "service" + userId,
-            searchText,
-            isLoggined,
-            Object.keys(result)
-        );
+        console.log("service" + Object.keys(result));
         if (Object.keys(result).length !== 0) {
-            return perfumeSearchResponseDTO(result);
+            return perfumeResultResponseDTO(result);
         } else {
-            const result2 = await getAllPerfumesSearch(userId);
+            const result2 = await getAllPerfumes();
             // console.log("reseult2" + result2);
             // const allPerfumes = JSON.stringify(
             //     perfumeResultResponseDTO(result2)

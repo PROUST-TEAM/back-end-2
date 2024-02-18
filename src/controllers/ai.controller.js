@@ -7,23 +7,12 @@ import { searchPerfume, recommendPerfume } from "../services/ai.service.js";
 import { BaseError } from "../../config/error.js";
 
 export const Search = async (req, res, next) => {
-    const searchText = req.body.search;
-    // const result = await searchPerfume(searchText);
-    const authHeader = req.headers.authorization;
-    console.log("controller : " + searchText, authHeader);
     try {
-        let result;
-        if (authHeader) {
-            const token = authHeader && authHeader.split(" ")[1]; // Bearer 제거
-            const decodedToken = jwt.verify(token, "secretsecretsecret");
-            const id = decodedToken.userId;
-            const user = await User.findById(id);
-            const userId = user.UserID;
-            result = await searchPerfume(userId, searchText, true);
-        } else {
-            result = await searchPerfume(null, searchText, false);
-        }
+        const searchText = req.body.search;
+        const result = await searchPerfume(searchText);
+
         console.log("controller result : " + JSON.stringify(result));
+
         res.status(200).json(
             response(
                 { isSuccess: true, code: 200, message: "검색 성공" },
