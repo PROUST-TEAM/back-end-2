@@ -26,11 +26,11 @@ export const insertperfumeDeleteSql = "DELETE FROM Comment WHERE PerfumeID = (SE
 
 // 향수 코멘트 조회 (로그인 유저)
 
-export const getCommentUserId = "SELECT cm.Content " + "FROM Comment cm JOIN Perfume p ON cm.PerfumeID = p.PerfumeID " + "WHERE p.Name = ? ;";
+export const getCommentUserId = "SELECT cm.Content, u.ID " + "FROM Comment cm JOIN Perfume p ON cm.PerfumeID = p.PerfumeID JOIN User u ON cm.UserID = u.UserID " + "WHERE p.Name = ? ;";
 
 // 향수 코멘트 조회 (비로그인 유저) -- 최신 댓글 3개까지
 
-export const getCommentId = "SELECT subquery.Content FROM ( SELECT cm.Content, cm.Created_At FROM Comment cm JOIN Perfume p ON cm.PerfumeID = p.PerfumeID WHERE p.Name = ? ORDER BY cm.Created_At DESC LIMIT 3) AS subquery ORDER BY subquery.Created_At ASC;";
+export const getCommentId = "SELECT subquery.Content, subquery.ID FROM ( SELECT cm.Content, u.ID, cm.Created_At FROM Comment cm JOIN Perfume p ON cm.PerfumeID = p.PerfumeID JOIN User u ON cm.UserID = u.UserID WHERE p.Name = ? ORDER BY cm.Created_At DESC LIMIT 3) AS subquery ORDER BY subquery.Created_At ASC;";
 
 // 찜 상태 조회
 export const getPerfumeLikeStatusSql = "SELECT up.Status FROM UserPerfume up WHERE up.UserID = (SELECT UserID FROM User WHERE ID = ?) and up.PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?);";
