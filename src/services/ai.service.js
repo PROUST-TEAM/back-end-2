@@ -1,7 +1,14 @@
 import { searchPerfumeResult } from "../models/ai.dao.js";
-import { perfumeResultResponseDTO } from "../dtos/ai.dto.js";
+import {
+    perfumeResultResponseDTO,
+    perfumeSearchResponseDTO,
+} from "../dtos/ai.dto.js";
 import OpenAI from "openai";
-import { getUserLikes, getAllPerfumes } from "../models/ai.dao.js";
+import {
+    getUserLikes,
+    getAllPerfumesSearch,
+    getAllPerfumes,
+} from "../models/ai.dao.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 
@@ -9,14 +16,23 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const searchPerfume = async (searchText) => {
+export const searchPerfume = async (userId, searchText, isLoggined) => {
     try {
-        const result = await searchPerfumeResult(searchText);
-        // console.log("reseult" + Object.keys(result));
+        const result = await searchPerfumeResult(
+            userId,
+            searchText,
+            isLoggined
+        );
+        console.log(
+            "service" + userId,
+            searchText,
+            isLoggined,
+            Object.keys(result)
+        );
         if (Object.keys(result).length !== 0) {
-            return perfumeResultResponseDTO(result);
+            return perfumeSearchResponseDTO(result);
         } else {
-            const result2 = await getAllPerfumes();
+            const result2 = await getAllPerfumesSearch(userId);
             // console.log("reseult2" + result2);
             // const allPerfumes = JSON.stringify(
             //     perfumeResultResponseDTO(result2)
