@@ -26,14 +26,14 @@ UserRoutes.post("/findPW/request", asyncHandler(sendAuthCode));
 UserRoutes.post("/findPW/confirm", asyncHandler(findPW));
 UserRoutes.post("/findPW/valid",asyncHandler(validConfirm));
 UserRoutes.get("/kakao", passport.authenticate("kakao", { session: false }));
-UserRoutes.get("/kakao/callback", passport.authenticate("kakao", { session: false, failureRedirect: "/" }), (req, res) => {
+UserRoutes.get("/kakao/callback", passport.authenticate("kakao", { session: false, failureRedirect: "/", successRedirect:"/home" }), (req, res) => {
   res.status(200).json(response({ isSuccess: true, code: 200, message: "로그인에 성공하였습니다." }, req.user));
 });
 UserRoutes.get("/google", passport.authenticate("google", { session: false, scope: ["profile", "email"] }));
-UserRoutes.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: "/" }), (req, res) => {
+UserRoutes.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: "/" ,successRedirect:"/home"}), (req, res) => {
   res.status(200).json(response({ isSuccess: true, code: 200, message: "로그인에 성공하였습니다." }, req.user));
 });
 UserRoutes.get("/naver", passport.authenticate("naver", { session: false }));
-UserRoutes.get("/naver/callback", passport.authenticate("naver", { session: false, failureRedirect: "/" }), (req, res) => {
+UserRoutes.get("/naver/callback", passport.authenticate("naver", { session: false, failureRedirect: "/", successRedirect:"/home" }), (req, res) => {
   res.status(200).json(response({ isSuccess: true, code: 200, message: "로그인에 성공하였습니다." }, req.user));
 });
