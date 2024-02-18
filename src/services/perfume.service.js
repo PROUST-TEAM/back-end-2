@@ -20,6 +20,12 @@ export const joinperfumeWrite = async (Name, UserID, body) => {
 // 향수 코멘트 삭제
 export const joinperfumeDelete = async (Name, UserID, Content) => {
   const joinperfumeDeleteData = await addperfumeDelete(Name, UserID, Content);
+
+  if (joinperfumeDeleteData == -1) {
+    throw new BaseError(status.OTHER_USER);
+  } else {
+    return joinperfumeDeleteData;
+  }
 };
 
 // 향수 찜하기

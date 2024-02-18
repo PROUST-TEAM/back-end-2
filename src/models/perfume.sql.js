@@ -20,6 +20,8 @@ export const getperfumeWriteID = "SELECT * FROM Comment WHERE CommentID = ?;";
 
 // 향수 코멘트 삭제
 
+export const confirmUser = "SELECT EXISTS(SELECT 1 FROM Comment c WHERE UserID != (SELECT UserID FROM User WHERE ID = ?) AND Content = ? AND PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?)) as isOtherUser;";
+
 export const insertperfumeDeleteSql = "DELETE FROM Comment WHERE PerfumeID = (SELECT PerfumeID FROM Perfume WHERE Name = ?) AND UserID = (SELECT UserID FROM User WHERE ID = ?) AND Content = ?";
 
 // 향수 코멘트 조회 (로그인 유저)
