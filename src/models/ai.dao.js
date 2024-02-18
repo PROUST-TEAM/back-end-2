@@ -47,7 +47,7 @@ export const searchPerfumeResult = async (searchText) => {
         //     ]);
         // }
 
-        console.log(perfumes);
+        // console.log(perfumes);
 
         let result = {};
 

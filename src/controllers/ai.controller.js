@@ -11,7 +11,7 @@ export const Search = async (req, res, next) => {
         const searchText = req.body.search;
         const result = await searchPerfume(searchText);
 
-        console.log("controller result : " + JSON.stringify(result));
+        // console.log("controller result : " + JSON.stringify(result));
 
         res.status(200).json(
             response(

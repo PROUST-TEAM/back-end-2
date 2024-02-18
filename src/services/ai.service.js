@@ -23,7 +23,7 @@ export const searchPerfume = async (searchText) => {
             searchText
             // isLoggined
         );
-        console.log("service" + Object.keys(result));
+        // console.log("service" + Object.keys(result));
         if (Object.keys(result).length !== 0) {
             return perfumeResultResponseDTO(result);
         } else {
