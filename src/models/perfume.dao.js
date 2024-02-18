@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.config.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getPerfumeId, getcategoryId, getlikeId, getperfumeWriteID, insertperfumeWriteSql, insertperfumeDeleteSql, getCommentUserId, getCommentId, insertPerfumeLikeSql, updatePerfumeLikeSql, getPerfumeLikeStatusSql, confirmComment } from "./perfume.sql.js";
+import { getPerfumeId, getcategoryId, getlikeId, getperfumeWriteID, insertperfumeWriteSql, insertperfumeDeleteSql, getCommentUserId, getCommentId, insertPerfumeLikeSql, updatePerfumeLikeSql, getPerfumeLikeStatusSql, confirmComment, confirmUser } from "./perfume.sql.js";
 
 // 향수 상세 정보 조회
 export const getPreviewperfumeContent = async (Name) => {
@@ -96,10 +96,26 @@ export const addperfumeDelete = async (Name, UserID, Content) => {
 
     // console.log("Inserting perfumeDelete:", Name, UserID, Content); // 추가: 데이터가 올바르게 전달되는지 확인하기 위한 로그
 
-    const result = await pool.query(insertperfumeDeleteSql, [Name, UserID, Content]);
+    const [confirmMe] = await pool.query(confirmComment, [UserID, Content, Name]);
 
-    conn.release();
-    return result[0].insertId;
+    if (confirmMe[0].isExistComment) {
+      const result = await pool.query(insertperfumeDeleteSql, [Name, UserID, Content]);
+
+      conn.release();
+      return result[0].insertId;
+    }
+
+    const [confirmOther] = await pool.query(confirmUser, [UserID, Content, Name]);
+
+    if (confirmOther[0].isOtherUser) {
+      conn.release();
+      return -1;
+    }
+
+    // const result = await pool.query(insertperfumeDeleteSql, [Name, UserID, Content]);
+
+    // conn.release();
+    // return result[0].insertId;
   } catch (err) {
     console.error("Error in addperfumeDelete:", err); // 추가: 에러 발생 시 에러 메시지 출력
     throw new BaseError(status.PARAMETER_IS_WRONG);
